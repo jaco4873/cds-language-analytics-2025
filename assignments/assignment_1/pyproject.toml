@@ -1,0 +1,11 @@
+[project]
+name = "CDS-Language-Analytics-Assignment-1"
+version = "0.1.0"
+description = "A Python project that uses spaCy to extract linguistic features from the Uppsala Student English Corpus (USE), including relative frequencies of parts of speech and named entity counts, with results saved as CSV files for each subfolder."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "spacy",
+    "pip",
+    "ipykernel>=6.29.5",
+]
