@@ -1,0 +1,15 @@
+[project]
+name = "fake_news_classification"
+version = "0.1.0"
+description = "Text classification benchmarks for Fake News detection"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "scikit-learn",
+  "numpy",
+  "pandas",
+  "matplotlib",
+  "seaborn",
+  "pyyaml",
+  "pydantic-settings>=2.8.1",
+]

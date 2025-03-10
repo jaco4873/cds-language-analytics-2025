@@ -1,0 +1,11 @@
+Classification Report for naive_bayes_report
+==================================================
+
+              precision    recall  f1-score   support
+
+        REAL       0.88      0.92      0.90       634
+        FAKE       0.91      0.87      0.89       633
+
+    accuracy                           0.89      1267
+   macro avg       0.89      0.89      0.89      1267
+weighted avg       0.89      0.89      0.89      1267

@@ -1,0 +1,11 @@
+Classification Report for logistic_regression_report
+==================================================
+
+              precision    recall  f1-score   support
+
+        REAL       0.93      0.91      0.92       634
+        FAKE       0.91      0.93      0.92       633
+
+    accuracy                           0.92      1267
+   macro avg       0.92      0.92      0.92      1267
+weighted avg       0.92      0.92      0.92      1267
