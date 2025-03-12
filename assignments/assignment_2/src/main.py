@@ -9,24 +9,21 @@ This script runs the entire pipeline:
 5. Visualization of performance metrics
 """
 
-import os
-import argparse
-import time
 import pandas as pd
 import seaborn as sns
 
+from trainers.train_logistic_regression import train_logistic_regression
+from trainers.train_neural_network import train_neural_network
+from trainers.train_naive_bayes import train_naive_bayes
 from utils.data_utils import load_fake_news_data, preprocess_split_data
 from utils.vectorization_utils import (
     vectorize_text,
     save_vectorized_data,
     load_vectorized_data,
 )
-from utils.model_utils import (
-    train_model,
-    evaluate_model,
-)
 from utils.common import print_section_header, ensure_all_dirs
-from utils.visualization import create_visualizations
+from utils.visualization_utils import create_visualizations
+from utils.result_utils import create_comparison_table
 
 # Import settings
 from settings import settings
@@ -35,20 +32,7 @@ from settings import settings
 sns.set_style("whitegrid")
 
 
-def parse_args():
-    """Parse command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Run text classification benchmarks on the Fake News Dataset."
-    )
-    parser.add_argument(
-        "--skip-vectorization",
-        action="store_true",
-        help="Skip data loading and vectorization, use existing vectorized data.",
-    )
-    return parser.parse_args()
-
-
-def train_evaluate_all_models(X_train, X_test, y_train, y_test):
+def train_evaluate_all_models(X_train, X_test, y_train, y_test) -> list[dict]:
     """
     Train and evaluate all enabled classification models from settings.
 
@@ -61,113 +45,37 @@ def train_evaluate_all_models(X_train, X_test, y_train, y_test):
     results : list of dict
         List of dictionaries containing model metrics
     """
-    models_dir = settings.output.models_dir
-    output_dir = settings.output.output_dir
+
+    print(
+        f"Loading pre-vectorized data from {settings.vectorization.vectorized_dir}..."
+    )
+    X_train_vec, X_test_vec, y_train, y_test = load_vectorized_data(
+        settings.vectorization.vectorized_dir
+    )
+
     results = []
 
-    # Get all enabled model configurations
-    model_configs = [
-        (settings.models.logistic_regression, "logistic_regression"),
-        (settings.models.neural_network, "neural_network"),
-        (settings.models.naive_bayes, "naive_bayes"),
-    ]
-
     # Process each enabled model
-    for config, model_type in model_configs:
-        if not config.enabled:
-            continue
-
-        print_section_header(f"Training {config.name}")
-
-        # Train model
-        start_time = time.time()
-        model = train_model(model_type, config, X_train, y_train)
-        training_time = time.time() - start_time
-        print(f"Training completed in {training_time:.2f} seconds")
-
-        # Evaluate model
-        print("Evaluating model...")
-        metrics = evaluate_model(
-            model, X_test, y_test, config.name, training_time, models_dir, output_dir
+    if settings.models.logistic_regression.enabled:
+        print_section_header(f"Training {settings.models.logistic_regression.name}")
+        logistic_regression_metrics = train_logistic_regression(
+            X_train_vec, X_test_vec, y_train, y_test
         )
-
-        # Store results
-        results.append(metrics)
-
-        # Print results summary
-        print("Model evaluation complete!")
-        print(f"Accuracy: {metrics['accuracy']:.4f}")
-        print(f"F1-Score (REAL): {metrics['real_f1']:.4f}")
-        print(f"F1-Score (FAKE): {metrics['fake_f1']:.4f}")
+        results.append(logistic_regression_metrics)
+    if settings.models.neural_network.enabled:
+        print_section_header(f"Training {settings.models.neural_network.name}")
+        neural_network_metrics = train_neural_network(X_train, X_test, y_train, y_test)
+        results.append(neural_network_metrics)
+    if settings.models.naive_bayes.enabled:
+        print_section_header(f"Training {settings.models.naive_bayes.name}")
+        naive_bayes_metrics = train_naive_bayes(X_train, X_test, y_train, y_test)
+        results.append(naive_bayes_metrics)
 
     return results
 
 
-def create_comparison_table(results, results_dir):
-    """
-    Create and save a table comparing model performance.
-
-    Parameters:
-    -----------
-    results : list of dict
-        List of dictionaries containing model metrics
-    results_dir : str
-        Directory to save the comparison table
-
-    Returns:
-    --------
-    df : pandas.DataFrame
-        DataFrame containing the comparison table
-    """
-    # Create DataFrame from results
-    df = pd.DataFrame(results)
-
-    # Reorder columns for better display
-    display_cols = [
-        "model",
-        "description",
-        "accuracy",
-        "training_time",
-        "real_precision",
-        "real_recall",
-        "real_f1",
-        "fake_precision",
-        "fake_recall",
-        "fake_f1",
-    ]
-
-    # Rename columns for better display
-    rename_map = {
-        "model": "Model",
-        "description": "Description",
-        "real_precision": "REAL Precision",
-        "real_recall": "REAL Recall",
-        "real_f1": "REAL F1",
-        "fake_precision": "FAKE Precision",
-        "fake_recall": "FAKE Recall",
-        "fake_f1": "FAKE F1",
-        "accuracy": "Accuracy",
-        "training_time": "Training Time (s)",
-    }
-
-    # Create and display comparison table
-    comparison_table = df[display_cols].rename(columns=rename_map).set_index("Model")
-
-    # Print the table
-    print_section_header("Model Performance Comparison")
-    print(comparison_table.round(4))
-
-    # Save the table to CSV
-    comparison_table.to_csv(os.path.join(results_dir, "model_comparison.csv"))
-    print(f"\nComparison saved to {os.path.join(results_dir, 'model_comparison.csv')}")
-
-    return df
-
-
 def main():
     """Main function to run the entire pipeline."""
-    # Parse command line arguments
-    args = parse_args()
 
     print("Evaluating multiple classifiers on the Fake News Dataset.")
     print("Using settings from config.yaml")
@@ -195,7 +103,7 @@ def main():
     ensure_all_dirs()
 
     # Override vectorization skip from command line
-    skip_vectorization = args.skip_vectorization
+    skip_vectorization = settings.vectorization.skip_vectorization
 
     # Step 1: Data loading and vectorization
     if not skip_vectorization:

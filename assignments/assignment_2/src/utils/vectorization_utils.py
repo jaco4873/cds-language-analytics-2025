@@ -12,7 +12,7 @@ from utils.common import ensure_dir
 from settings import settings
 
 
-def vectorize_text(X_train, X_test, **kwargs):
+def vectorize_text(X_train, X_test, **kwargs) -> tuple[np.ndarray, np.ndarray, TfidfVectorizer | CountVectorizer]:
     """
     Vectorize text data using either TF-IDF or Count vectorization.
 
@@ -39,7 +39,7 @@ def vectorize_text(X_train, X_test, **kwargs):
 
     vec_config = settings.vectorization
 
-    # Set default vectorizer parameters
+    # Set vectorizer parameters
     defaults = {
         "max_features": vec_config.max_features,
         "min_df": vec_config.min_df,
@@ -71,7 +71,7 @@ def vectorize_text(X_train, X_test, **kwargs):
 
 def save_vectorized_data(
     X_train_vec, X_test_vec, y_train, y_test, vectorizer, output_dir=None
-):
+) -> None:
     """
     Save vectorized data and labels to disk.
 
@@ -112,7 +112,9 @@ def save_vectorized_data(
     print(f"Vectorized data saved to {output_dir}")
 
 
-def load_vectorized_data(input_dir=None):
+def load_vectorized_data(
+    input_dir=None,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Load vectorized data and labels from disk.
 
@@ -154,4 +156,4 @@ def load_vectorized_data(input_dir=None):
 
     print(f"Vectorized data loaded from {input_dir}")
 
-    return X_train_vec, X_test_vec, y_train, y_test, vectorizer
+    return X_train_vec, X_test_vec, y_train, y_test

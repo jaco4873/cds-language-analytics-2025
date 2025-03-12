@@ -24,6 +24,7 @@ class DataConfig(BaseSettings):
 class VectorizationConfig(BaseSettings):
     """Text vectorization configuration."""
 
+    skip_vectorization: bool = False
     vectorizer_type: Literal["tfidf", "count"] = "tfidf"
     max_features: int = 10000
     min_df: int = 2
@@ -79,6 +80,7 @@ class ModelsConfig(BaseSettings):
     logistic_regression: LogisticRegressionConfig = LogisticRegressionConfig()
     neural_network: NeuralNetworkConfig = NeuralNetworkConfig()
     naive_bayes: NaiveBayesConfig = NaiveBayesConfig()
+    random_state: int = 42
 
 
 class OutputConfig(BaseSettings):

@@ -1,141 +1,62 @@
 #!/usr/bin/env python3
 """
 Script to train a logistic regression classifier on the Fake News dataset.
-This script loads pre-vectorized data created by the vectorize_data.py script.
+This script loads pre-vectorized data created by the vectorize_data.py script
+and uses settings from the central configuration.
 """
 
-import os
-import argparse
+import time
 from sklearn.linear_model import LogisticRegression
-from utils.model_utils import (
-    save_model,
-    save_classification_report,
-    ensure_dir,
-)
-from utils.vectorization_utils import load_vectorized_data
+from settings import settings
+from utils.model_utils import evaluate_model
+from utils.common import ensure_dir
 
 
-def parse_args():
-    """Parse command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Train a logistic regression classifier on the Fake News dataset."
-    )
+def train_logistic_regression(X_train_vec, X_test_vec, y_train, y_test) -> dict:
+    """Function to train and evaluate the logistic regression model."""
+    # Get configuration from settings
+    lr_config = settings.models.logistic_regression
 
-    parser.add_argument(
-        "--vectorized-data-dir",
-        type=str,
-        default="data/vectorized",
-        help="Directory containing vectorized data.",
-    )
-
-    parser.add_argument(
-        "--models-dir",
-        type=str,
-        default="models",
-        help="Directory to save the trained model.",
-    )
-
-    parser.add_argument(
-        "--output-dir",
-        type=str,
-        default="output",
-        help="Directory to save the classification report.",
-    )
-
-    parser.add_argument(
-        "--model-name",
-        type=str,
-        default="logistic_regression",
-        help="Name for the saved model file.",
-    )
-
-    parser.add_argument(
-        "--c-value",
-        type=float,
-        default=1.0,
-        help="Regularization parameter for logistic regression.",
-    )
-
-    parser.add_argument(
-        "--max-iter",
-        type=int,
-        default=1000,
-        help="Maximum number of iterations for the solver.",
-    )
-
-    return parser.parse_args()
-
-
-def train_logistic_regression(X_train, y_train, c_value=1.0, max_iter=1000):
-    """
-    Train a logistic regression model.
-
-    Parameters:
-    -----------
-    X_train : array-like or sparse matrix
-        Training data features
-    y_train : array-like
-        Training data labels
-    c_value : float, optional (default=1.0)
-        Regularization parameter
-    max_iter : int, optional (default=1000)
-        Maximum number of iterations for the solver
-
-    Returns:
-    --------
-    model : LogisticRegression
-        Trained logistic regression model
-    """
-    print(f"Training logistic regression model (C={c_value}, max_iter={max_iter})...")
-    model = LogisticRegression(
-        C=c_value,
-        max_iter=max_iter,
-        random_state=42,
-        solver="liblinear",
-    )
-
-    model.fit(X_train, y_train)
-    print("Model training complete!")
-
-    return model
-
-
-def main():
-    """Main function to train and evaluate the logistic regression model."""
-    args = parse_args()
+    # Set up directories from settings
+    models_dir = settings.output.models_dir
+    output_dir = settings.output.output_dir
+    model_name = lr_config.name
 
     # Ensure output directories exist
-    ensure_dir(args.models_dir)
-    ensure_dir(args.output_dir)
+    ensure_dir(models_dir)
+    ensure_dir(output_dir)
 
-    # Load pre-vectorized data
-    print(f"Loading pre-vectorized data from {args.vectorized_data_dir}...")
-    X_train_vec, X_test_vec, y_train, y_test, vectorizer = load_vectorized_data(
-        args.vectorized_data_dir
+    # Create the model directly
+    print(
+        f"Training Logistic Regression (C={lr_config.c_value}, max_iter={lr_config.max_iter}, solver={lr_config.solver})..."
+    )
+
+    model = LogisticRegression(
+        C=lr_config.c_value,
+        max_iter=lr_config.max_iter,
+        random_state=settings.models.random_state,
+        solver=lr_config.solver,
     )
 
     # Train the model
-    model = train_logistic_regression(
-        X_train_vec, y_train, c_value=args.c_value, max_iter=args.max_iter
+    start_time = time.time()
+    model.fit(X_train_vec, y_train)
+    training_time = time.time() - start_time
+    print(f" Training completed in {training_time:.2f} seconds")
+
+    # Evaluate and save the model and results
+    metrics = evaluate_model(
+        model,
+        X_test_vec,
+        y_test,
+        model_name,
+        training_time,
+        models_dir,
+        output_dir,
     )
 
-    # Make predictions
-    print("Making predictions on test set...")
-    y_pred = model.predict(X_test_vec)
-
-    # Save classification report
-    report_name = f"{args.model_name}_report"
-    save_classification_report(y_test, y_pred, report_name, args.output_dir)
-
-    # Save the model
-    save_model(model, args.model_name, args.models_dir)
-
-    print("\nLogistic regression model training and evaluation complete!")
-    print(f"Model saved to: {os.path.join(args.models_dir, args.model_name + '.pkl')}")
-    print(
-        f"Classification report saved to: {os.path.join(args.output_dir, report_name + '.txt')}"
-    )
+    return metrics
 
 
 if __name__ == "__main__":
-    main()
+    train_logistic_regression()

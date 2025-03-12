@@ -5,16 +5,14 @@ This module contains functions for saving models and evaluation reports.
 
 import os
 import pickle
+from typing import Any
 from sklearn.metrics import classification_report
-from sklearn.linear_model import LogisticRegression
-from sklearn.neural_network import MLPClassifier
-from sklearn.naive_bayes import MultinomialNB
 
 from utils.common import ensure_dir
 from settings import settings
 
 
-def save_model(model, model_name, models_dir=None):
+def save_model(model, model_name, models_dir=None) -> None:
     """
     Save a trained model to disk.
 
@@ -39,7 +37,7 @@ def save_model(model, model_name, models_dir=None):
     print(f"Model saved to {model_path}")
 
 
-def save_classification_report(y_true, y_pred, report_name, output_dir=None):
+def save_classification_report(y_true, y_pred, report_name, output_dir=None) -> None:
     """
     Generate and save a classification report to a text file.
 
@@ -77,7 +75,7 @@ def save_classification_report(y_true, y_pred, report_name, output_dir=None):
     print(report)
 
 
-def load_model(model_name, models_dir=None):
+def load_model(model_name, models_dir=None) -> Any:
     """
     Load a trained model from disk.
 
@@ -108,73 +106,9 @@ def load_model(model_name, models_dir=None):
     return model
 
 
-def train_model(model_type, config, X_train, y_train):
-    """
-    Create and train a model based on config.
-
-    Parameters:
-    -----------
-    model_type : str
-        Type of model to create ('logistic_regression', 'neural_network', or 'naive_bayes')
-    config : object
-        Configuration object with model parameters
-    X_train, y_train : training data
-
-    Returns:
-    --------
-    trained_model : object
-        The trained model
-    """
-    if model_type == "logistic_regression":
-        print(
-            f"Training Logistic Regression (C={config.c_value}, max_iter={config.max_iter}, "
-            f"solver={config.solver})..."
-        )
-        model = LogisticRegression(
-            C=config.c_value,
-            max_iter=config.max_iter,
-            random_state=42,
-            solver=config.solver,
-            n_jobs=-1,
-        )
-
-    elif model_type == "neural_network":
-        print(
-            f"Training Neural Network (hidden_layers={config.hidden_layer_sizes}, "
-            f"activation={config.activation}, solver={config.solver}, "
-            f"max_iter={config.max_iter}, early_stopping={config.early_stopping})..."
-        )
-        model = MLPClassifier(
-            hidden_layer_sizes=config.hidden_layer_sizes,
-            activation=config.activation,
-            solver=config.solver,
-            alpha=config.alpha,
-            batch_size=config.batch_size,
-            learning_rate=config.learning_rate,
-            learning_rate_init=config.learning_rate_init,
-            max_iter=config.max_iter,
-            random_state=42,
-            early_stopping=config.early_stopping,
-            validation_fraction=config.validation_fraction,
-        )
-
-    elif model_type == "naive_bayes":
-        print(
-            f"Training Naive Bayes (alpha={config.alpha}, fit_prior={config.fit_prior})..."
-        )
-        model = MultinomialNB(alpha=config.alpha, fit_prior=config.fit_prior)
-
-    else:
-        raise ValueError(f"Unknown model type: {model_type}")
-
-    # Train the model
-    model.fit(X_train, y_train)
-    return model
-
-
 def evaluate_model(
     model, X_test, y_test, model_name, training_time, models_dir, output_dir
-):
+) -> dict:
     """
     Evaluate model, save results, and return metrics.
 
@@ -216,6 +150,21 @@ def evaluate_model(
         "accuracy": report["accuracy"],
         "training_time": training_time,
     }
+
+    print(f"\n{model_name} model training and evaluation complete!")
+    print(f"Training time: {metrics['training_time']:.2f} seconds")
+    print(f"Accuracy: {metrics['accuracy']:.4f}")
+
+    print(f"Real precision: {metrics['real_precision']:.4f}")
+    print(f"Fake precision: {metrics['fake_precision']:.4f}")
+    print(f"Real recall: {metrics['real_recall']:.4f}")
+    print(f"Fake recall: {metrics['fake_recall']:.4f}")
+    print(f"Real F1-Score: {metrics['real_f1']:.4f}")
+    print(f"Fake F1-Score: {metrics['fake_f1']:.4f}")
+    print(f"Model saved to: {os.path.join(models_dir, model_name + '.pkl')}")
+    print(
+        f"Classification report saved to: {os.path.join(output_dir, model_name + '_report.txt')}"
+    )
 
     # Save model
     save_model(model, model_name, models_dir)
