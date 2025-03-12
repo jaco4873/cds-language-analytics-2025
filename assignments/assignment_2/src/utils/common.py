@@ -13,20 +13,6 @@ def ensure_dir(directory):
         os.makedirs(directory)
 
 
-def print_section_header(title):
-    """
-    Print a formatted section header.
-
-    Parameters:
-    -----------
-    title : str
-        Title for the section header
-    """
-    print("\n" + "=" * 80)
-    print(f" {title}")
-    print("=" * 80)
-
-
 def ensure_all_dirs():
     """Ensure all necessary directories exist based on configuration."""
     dirs = [
@@ -41,3 +27,17 @@ def ensure_all_dirs():
         ensure_dir(directory)
 
     return dirs
+
+
+def print_section_header(title):
+    """
+    Print a formatted section header.
+
+    Parameters:
+    -----------
+    title : str
+        Title for the section header
+    """
+    print("\n" + "=" * 80)
+    print(f" {title}")
+    print("=" * 80)

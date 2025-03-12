@@ -66,14 +66,16 @@ mkdir -p data/vectorized models output results
 
 # Prompt user to run the analysis
 echo ""
-echo "┌───────────────────────────────────────────────┐"
-echo "│                                               │"
-echo "│  🚀 Ready to launch the analysis?             │"
-echo "│                                               │"
-echo "│  Press [ENTER] to start now                   │"
-echo "│  Press any other key to start later           │"
-echo "│                                               │"
-echo "└───────────────────────────────────────────────┘"
+echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+echo "┃                                                                ┃"
+echo "┃   🌟 🌟 🌟  READY TO LAUNCH  🌟 🌟 🌟                          ┃"
+echo "┃                                                                ┃"
+echo "┃   🚀 Ready to launch the text classification analysis?         ┃"
+echo "┃                                                                ┃"
+echo "┃   ✅ Press [ENTER] to start now                               ┃"
+echo "┃   ⏱️  Press any other key to start later                      ┃"
+echo "┃                                                                ┃"
+echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
 echo ""
 
 read -p "➤ " run_analysis

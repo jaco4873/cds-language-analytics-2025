@@ -92,7 +92,6 @@ def train_logistic_regression(X_train, y_train, c_value=1.0, max_iter=1000):
         max_iter=max_iter,
         random_state=42,
         solver="liblinear",
-        n_jobs=-1,
     )
 
     model.fit(X_train, y_train)
