@@ -12,7 +12,9 @@ from utils.common import ensure_dir
 from settings import settings
 
 
-def vectorize_text(X_train, X_test, **kwargs) -> tuple[np.ndarray, np.ndarray, TfidfVectorizer | CountVectorizer]:
+def vectorize_text(
+    X_train, X_test
+) -> tuple[np.ndarray, np.ndarray, TfidfVectorizer | CountVectorizer]:
     """
     Vectorize text data using either TF-IDF or Count vectorization.
 
@@ -59,7 +61,9 @@ def vectorize_text(X_train, X_test, **kwargs) -> tuple[np.ndarray, np.ndarray, T
         )
 
     # Fit and transform the training data, then transform the test data
+    print("Vectorizing training data...")
     X_train_vec = vectorizer.fit_transform(X_train)
+    print("Vectorizing testing data...")
     X_test_vec = vectorizer.transform(X_test)
 
     print(
@@ -113,8 +117,8 @@ def save_vectorized_data(
 
 
 def load_vectorized_data(
-    input_dir=None,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    input_dir,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Load vectorized data and labels from disk.
 
@@ -135,9 +139,32 @@ def load_vectorized_data(
         Testing labels
     vectorizer : TfidfVectorizer or CountVectorizer
         The fitted vectorizer
+
+    Raises:
+    -------
+    FileNotFoundError:
+        If the required vectorized data files are not found in the input directory
     """
-    if input_dir is None:
-        input_dir = settings.vectorization.vectorized_dir
+    input_dir = settings.vectorization.vectorized_dir
+
+    # Check if all required files exist
+    required_files = [
+        "y_train.npy",
+        "y_test.npy",
+        "X_train_vec.pkl",
+        "X_test_vec.pkl",
+        "vectorizer.pkl",
+    ]
+
+    missing_files = [
+        f for f in required_files if not os.path.exists(os.path.join(input_dir, f))
+    ]
+
+    if missing_files:
+        raise FileNotFoundError(
+            f"Vectorized data not found in {input_dir}. Missing files: {', '.join(missing_files)}. "
+            f"Please run vectorization first using vectorize_text() and save_vectorized_data()."
+        )
 
     # Load arrays
     y_train = np.load(os.path.join(input_dir, "y_train.npy"))
@@ -145,15 +172,11 @@ def load_vectorized_data(
 
     # Load sparse matrices
     with open(os.path.join(input_dir, "X_train_vec.pkl"), "rb") as f:
-        X_train_vec = pickle.load(f)
+        X_train = pickle.load(f)
 
     with open(os.path.join(input_dir, "X_test_vec.pkl"), "rb") as f:
-        X_test_vec = pickle.load(f)
-
-    # Load the vectorizer
-    with open(os.path.join(input_dir, "vectorizer.pkl"), "rb") as f:
-        vectorizer = pickle.load(f)
+        X_test = pickle.load(f)
 
     print(f"Vectorized data loaded from {input_dir}")
 
-    return X_train_vec, X_test_vec, y_train, y_test
+    return X_train, X_test, y_train, y_test

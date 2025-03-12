@@ -10,10 +10,9 @@ from sklearn.neural_network import MLPClassifier
 from settings import settings
 from utils.model_utils import evaluate_model
 from utils.common import ensure_dir
-from utils.vectorization_utils import load_vectorized_data
 
 
-def train_neural_network(X_train_vec, X_test_vec, y_train, y_test) -> dict:
+def train_neural_network(X_train, X_test, y_train, y_test) -> dict:
     """Function to train and evaluate the neural network model."""
     # Get configuration from settings
     nn_config = settings.models.neural_network
@@ -52,7 +51,7 @@ def train_neural_network(X_train_vec, X_test_vec, y_train, y_test) -> dict:
 
     # Train the model
     start_time = time.time()
-    model.fit(X_train_vec, y_train)
+    model.fit(X_train, y_train)
     training_time = time.time() - start_time
     print(f" Training completed in {training_time:.2f} seconds")
 
@@ -67,7 +66,7 @@ def train_neural_network(X_train_vec, X_test_vec, y_train, y_test) -> dict:
     # Evaluate and save the model and results
     metrics = evaluate_model(
         model,
-        X_test_vec,
+        X_test,
         y_test,
         model_name,
         training_time,

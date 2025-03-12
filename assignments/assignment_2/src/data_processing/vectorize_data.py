@@ -16,8 +16,7 @@ from utils.vectorization_utils import (
 from utils.common import ensure_dir
 from settings import settings
 
-
-def main():
+def vectorization_pipeline():
     """Main function to vectorize and save data."""
     # Create output directory if it doesn't exist
     output_dir = settings.vectorization.vectorized_dir
@@ -30,15 +29,7 @@ def main():
     print("Splitting data into train and test sets...")
     X_train, X_test, y_train, y_test = preprocess_split_data(X, y)
 
-    vectorizer_type = settings.vectorization.vectorizer_type
-    max_features = settings.vectorization.max_features
-    print(f"Vectorizing text data using {vectorizer_type.upper()}...")
-    X_train_vec, X_test_vec, vectorizer = vectorize_text(
-        X_train,
-        X_test,
-        vectorizer_type=vectorizer_type,
-        max_features=max_features,
-    )
+    X_train_vec, X_test_vec, vectorizer = vectorize_text(X_train, X_test)
 
     print("Saving vectorized data...")
     save_vectorized_data(
@@ -49,4 +40,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    vectorization_pipeline()

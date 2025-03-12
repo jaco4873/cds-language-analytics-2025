@@ -12,7 +12,7 @@ from utils.model_utils import evaluate_model
 from utils.common import ensure_dir
 
 
-def train_logistic_regression(X_train_vec, X_test_vec, y_train, y_test) -> dict:
+def train_logistic_regression(X_train, X_test, y_train, y_test) -> dict:
     """Function to train and evaluate the logistic regression model."""
     # Get configuration from settings
     lr_config = settings.models.logistic_regression
@@ -40,14 +40,14 @@ def train_logistic_regression(X_train_vec, X_test_vec, y_train, y_test) -> dict:
 
     # Train the model
     start_time = time.time()
-    model.fit(X_train_vec, y_train)
+    model.fit(X_train, y_train)
     training_time = time.time() - start_time
     print(f" Training completed in {training_time:.2f} seconds")
 
     # Evaluate and save the model and results
     metrics = evaluate_model(
         model,
-        X_test_vec,
+        X_test,
         y_test,
         model_name,
         training_time,
