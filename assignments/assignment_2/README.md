@@ -162,6 +162,7 @@ Additionally, the system saves:
 The codebase follows good software engineering principles:
 
 - **Type-safe Configuration**: Uses Pydantic Settings for validated, typed configuration
+- **Centralized Logging**: Uses a unified logging system configured through settings
 - **Modular architecture**: Functionality is divided into focused modules
 - **Utility package**: Common functions are organized in a dedicated utility package with specialized modules:
   - `common.py`: General helper functions like directory creation
@@ -169,8 +170,29 @@ The codebase follows good software engineering principles:
   - `vectorization_utils.py`: Functions for text vectorization operations
   - `model_utils.py`: Functions for saving/loading models and reports
   - `visualization.py`: Functions for creating performance visualizations
+  - `logger.py`: Centralized logging configuration and setup
 - **Separation of concerns**: Each component has a single responsibility
 - **DRY principle**: Common code is extracted and reused
+
+## Logging
+
+The project uses a centralized logging system that provides consistent logging across all modules:
+
+### Configuration
+
+Logging is configured through the `settings.py`:
+
+```python
+# In settings.py or via environment variables
+log_level: str = "INFO"  # Can be "DEBUG", "INFO", "WARNING", "ERROR", or "CRITICAL"
+```
+
+The logger outputs messages to the console with a simple format that includes the log level and message:
+```
+INFO: Loading Fake News dataset from data/fake_or_real_news.csv
+WARNING: Maximum iterations reached without convergence
+ERROR: Model file not found
+```
 
 ## Requirements
 
