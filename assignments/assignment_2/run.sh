@@ -92,24 +92,8 @@ echo "🔥 Running the complete text classification benchmark pipeline..."
 echo "⏳ This may take several minutes depending on your hardware."
 echo ""
 
-# Create a fancy spinner animation
-spinner() {
-    local pid=$1
-    local delay=0.1
-    local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
-        local spinstr=$temp${spinstr%"$temp"}
-        sleep $delay
-        printf "\b\b\b\b\b\b"
-    done
-    printf "    \b\b\b\b"
-}
-
-# Execute main.py with progress feedback and spinner
+# Execute main.py with progress feedback
 (uv run src/main.py) &
-spinner $!
 
 # Check if the command succeeded
 if [ $? -eq 0 ]; then

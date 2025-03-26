@@ -7,6 +7,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from utils.logger import logger
 
 # Set style for plots
 sns.set_style("whitegrid")
@@ -23,13 +24,13 @@ def create_visualizations(df, results_dir) -> None:
     results_dir : str
         Directory to save visualizations
     """
-    print(f"Creating visualizations in {results_dir}...")
+    logger.info(f"Creating visualizations in {results_dir}...")
 
     create_accuracy_comparison(df, results_dir)
     create_f1_comparison(df, results_dir)
     create_precision_recall_comparison(df, results_dir)
 
-    print(f"Visualizations saved to {results_dir}")
+    logger.info(f"Visualizations saved to {results_dir}")
 
 
 def create_barplot(

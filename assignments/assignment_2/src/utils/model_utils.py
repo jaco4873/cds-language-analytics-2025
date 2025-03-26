@@ -1,6 +1,5 @@
 """
 Model utility functions for text classification tasks.
-This module contains functions for saving models and evaluation reports.
 """
 
 import os
@@ -9,6 +8,7 @@ from typing import Any
 from sklearn.metrics import classification_report
 
 from utils.common import ensure_dir
+from utils.logger import logger
 from settings import settings
 
 
@@ -34,7 +34,7 @@ def save_model(model, model_name, models_dir=None) -> None:
     with open(model_path, "wb") as f:
         pickle.dump(model, f)
 
-    print(f"Model saved to {model_path}")
+    logger.info(f"Model saved to {model_path}")
 
 
 def save_classification_report(y_true, y_pred, report_name, output_dir=None) -> None:
@@ -70,9 +70,8 @@ def save_classification_report(y_true, y_pred, report_name, output_dir=None) -> 
     with open(report_path, "w") as f:
         f.write(report_content)
 
-    print(f"Classification report saved to {report_path}")
-    print("\nClassification Report:")
-    print(report)
+    logger.info(f"Classification report saved to {report_path}")
+    logger.info(f"Classification Report: \n{report}")
 
 
 def load_model(model_name, models_dir=None) -> Any:
@@ -97,12 +96,14 @@ def load_model(model_name, models_dir=None) -> Any:
     model_path = os.path.join(models_dir, f"{model_name}.pkl")
 
     if not os.path.exists(model_path):
-        raise FileNotFoundError(f"Model file not found at {model_path}")
+        error_msg = f"Model file not found at {model_path}"
+        logger.error(error_msg)
+        raise FileNotFoundError(error_msg)
 
     with open(model_path, "rb") as f:
         model = pickle.load(f)
 
-    print(f"Model loaded from {model_path}")
+    logger.info(f"Model loaded from {model_path}")
     return model
 
 
@@ -151,18 +152,18 @@ def evaluate_model(
         "training_time": training_time,
     }
 
-    print(f"\n{model_name} model training and evaluation complete!")
-    print(f"Training time: {metrics['training_time']:.2f} seconds")
-    print(f"Accuracy: {metrics['accuracy']:.4f}")
+    logger.info(f"\n{model_name} model training and evaluation complete!")
+    logger.info(f"Training time: {metrics['training_time']:.2f} seconds")
+    logger.info(f"Accuracy: {metrics['accuracy']:.4f}")
 
-    print(f"Real precision: {metrics['real_precision']:.4f}")
-    print(f"Fake precision: {metrics['fake_precision']:.4f}")
-    print(f"Real recall: {metrics['real_recall']:.4f}")
-    print(f"Fake recall: {metrics['fake_recall']:.4f}")
-    print(f"Real F1-Score: {metrics['real_f1']:.4f}")
-    print(f"Fake F1-Score: {metrics['fake_f1']:.4f}")
-    print(f"Model saved to: {os.path.join(models_dir, model_name + '.pkl')}")
-    print(
+    logger.info(f"Real precision: {metrics['real_precision']:.4f}")
+    logger.info(f"Fake precision: {metrics['fake_precision']:.4f}")
+    logger.info(f"Real recall: {metrics['real_recall']:.4f}")
+    logger.info(f"Fake recall: {metrics['fake_recall']:.4f}")
+    logger.info(f"Real F1-Score: {metrics['real_f1']:.4f}")
+    logger.info(f"Fake F1-Score: {metrics['fake_f1']:.4f}")
+    logger.info(f"Model saved to: {os.path.join(models_dir, model_name + '.pkl')}")
+    logger.info(
         f"Classification report saved to: {os.path.join(output_dir, model_name + '_report.txt')}"
     )
 

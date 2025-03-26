@@ -9,6 +9,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 
 from utils.common import ensure_dir
+from utils.logger import logger
 from settings import settings
 
 
@@ -61,12 +62,12 @@ def vectorize_text(
         )
 
     # Fit and transform the training data, then transform the test data
-    print("Vectorizing training data...")
+    logger.info("Vectorizing training data...")
     X_train_vec = vectorizer.fit_transform(X_train)
-    print("Vectorizing testing data...")
+    logger.info("Vectorizing testing data...")
     X_test_vec = vectorizer.transform(X_test)
 
-    print(
+    logger.info(
         f"Vectorization complete. Training shape: {X_train_vec.shape}, Testing shape: {X_test_vec.shape}"
     )
 
@@ -113,7 +114,7 @@ def save_vectorized_data(
     with open(os.path.join(output_dir, "vectorizer.pkl"), "wb") as f:
         pickle.dump(vectorizer, f)
 
-    print(f"Vectorized data saved to {output_dir}")
+    logger.info(f"Vectorized data saved to {output_dir}")
 
 
 def load_vectorized_data(
@@ -161,6 +162,10 @@ def load_vectorized_data(
     ]
 
     if missing_files:
+        logger.error(
+            f"Vectorized data not found in {input_dir}. Missing files: {', '.join(missing_files)}. "
+            f"Please run vectorization first using vectorize_text() and save_vectorized_data()."
+        )
         raise FileNotFoundError(
             f"Vectorized data not found in {input_dir}. Missing files: {', '.join(missing_files)}. "
             f"Please run vectorization first using vectorize_text() and save_vectorized_data()."
@@ -177,6 +182,6 @@ def load_vectorized_data(
     with open(os.path.join(input_dir, "X_test_vec.pkl"), "rb") as f:
         X_test = pickle.load(f)
 
-    print(f"Vectorized data loaded from {input_dir}")
+    logger.info(f"Vectorized data loaded from {input_dir}")
 
     return X_train, X_test, y_train, y_test

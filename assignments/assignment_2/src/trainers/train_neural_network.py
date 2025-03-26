@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
 Script to train a neural network classifier on the Fake News dataset.
-This script loads pre-vectorized data created by the vectorize_data.py script
-and uses settings from the central configuration.
+This script uses settings from the central configuration.
 """
 
 import time
@@ -10,6 +9,7 @@ from sklearn.neural_network import MLPClassifier
 from settings import settings
 from utils.model_utils import evaluate_model
 from utils.common import ensure_dir
+from utils.logger import logger
 
 
 def train_neural_network(X_train, X_test, y_train, y_test) -> dict:
@@ -30,8 +30,8 @@ def train_neural_network(X_train, X_test, y_train, y_test) -> dict:
     ensure_dir(output_dir)
 
     # Create the model directly
-    print(f"Training neural network with architecture: {hidden_layer_sizes}")
-    print(
+    logger.info(f"Training neural network with architecture: {hidden_layer_sizes}")
+    logger.info(
         f"Parameters: alpha={nn_config.alpha}, max_iter={nn_config.max_iter}, learning_rate_init={nn_config.learning_rate_init}"
     )
 
@@ -53,14 +53,14 @@ def train_neural_network(X_train, X_test, y_train, y_test) -> dict:
     start_time = time.time()
     model.fit(X_train, y_train)
     training_time = time.time() - start_time
-    print(f" Training completed in {training_time:.2f} seconds")
+    logger.info(f"Training completed in {training_time:.2f} seconds")
 
-    # Print information about convergence
+    # Log information about convergence
     if model.n_iter_ < nn_config.max_iter:
-        print(f"Convergence achieved after {model.n_iter_} iterations")
+        logger.info(f"Convergence achieved after {model.n_iter_} iterations")
     else:
-        print(
-            f"Warning: Maximum iterations ({nn_config.max_iter}) reached without convergence"
+        logger.warning(
+            f"Maximum iterations ({nn_config.max_iter}) reached without convergence"
         )
 
     # Evaluate and save the model and results

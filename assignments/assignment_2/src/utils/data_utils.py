@@ -8,6 +8,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from settings import settings
+from utils.logger import logger
 
 
 def load_fake_news_data(csv_path=None):
@@ -30,14 +31,14 @@ def load_fake_news_data(csv_path=None):
         csv_path = settings.data.csv_path
 
     if not os.path.exists(csv_path):
-        raise FileNotFoundError(
-            f"CSV file not found at {csv_path}. Please ensure the dataset exists."
-        )
+        error_msg = f"CSV file not found at {csv_path}. Please ensure the dataset exists."
+        logger.error(error_msg)
+        raise FileNotFoundError(error_msg)
 
     try:
         # Load the data
         df = pd.read_csv(csv_path)
-        print(f"Dataset loaded with shape: {df.shape}")
+        logger.info(f"Dataset loaded with shape: {df.shape}")
 
         # Extract features and labels
         X = df["text"].values
@@ -48,8 +49,9 @@ def load_fake_news_data(csv_path=None):
         return X, y
 
     except Exception as e:
-        print(f"Error loading dataset: {e}")
-        raise RuntimeError(f"Failed to load the dataset: {e}")
+        error_msg = f"Failed to load the dataset: {e}"
+        logger.error(error_msg)
+        raise RuntimeError(error_msg)
 
 
 def preprocess_split_data(X, y, test_size=None, random_state=None):

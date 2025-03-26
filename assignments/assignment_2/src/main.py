@@ -18,9 +18,10 @@ from trainers.train_naive_bayes import train_naive_bayes
 from utils.vectorization_utils import (
     load_vectorized_data,
 )
-from utils.common import print_section_header, ensure_all_dirs
+from utils.common import ensure_all_dirs
 from utils.visualization_utils import create_visualizations
 from utils.result_utils import create_comparison_table
+from utils.logger import logger
 
 # Import the vectorization pipeline
 from data_processing.vectorize_data import vectorization_pipeline
@@ -47,13 +48,13 @@ def train_test_evaluate_all_models(X_train, X_test, y_train, y_test) -> list[dic
 
     # Process each enabled model
     if settings.models.logistic_regression.enabled:
-        print_section_header(f"Training {settings.models.logistic_regression.name}")
+        logger.info(f"Training {settings.models.logistic_regression.name}")
         logistic_regression_metrics = train_logistic_regression(
             X_train, X_test, y_train, y_test
         )
         results.append(logistic_regression_metrics)
     if settings.models.neural_network.enabled:
-        print_section_header(f"Training {settings.models.neural_network.name}")
+        logger.info(f"Training {settings.models.neural_network.name}")
         neural_network_metrics = train_neural_network(
             X_train,
             X_test,
@@ -62,7 +63,7 @@ def train_test_evaluate_all_models(X_train, X_test, y_train, y_test) -> list[dic
         )
         results.append(neural_network_metrics)
     if settings.models.naive_bayes.enabled:
-        print_section_header(f"Training {settings.models.naive_bayes.name}")
+        logger.info(f"Training {settings.models.naive_bayes.name}")
         naive_bayes_metrics = train_naive_bayes(
             X_train,
             X_test,
@@ -77,12 +78,13 @@ def train_test_evaluate_all_models(X_train, X_test, y_train, y_test) -> list[dic
 def main():
     """Main function to run the entire pipeline."""
 
-    print("Evaluating multiple classifiers on the Fake News Dataset.")
-    print("Using settings from config.yaml")
+    logger.info("Evaluating multiple classifiers on the Fake News Dataset.")
+    logger.info("Using settings from config.yaml")
+    logger.info(f"Log level: {settings.log_level}")
 
-    # Print a summary of key settings
-    print(f"Data source: {settings.data.csv_path}")
-    print(f"Test size: {settings.data.test_size}")
+    # Log a summary of key settings
+    logger.info(f"Data source: {settings.data.csv_path}")
+    logger.info(f"Test size: {settings.data.test_size}")
 
     # Ensure all directories exist
     ensure_all_dirs()
@@ -90,11 +92,11 @@ def main():
     # Step 1: Data loading and vectorization (if needed)
     skip_vectorization = settings.vectorization.skip_vectorization
     if not skip_vectorization:
-        print_section_header("Data Loading and Preprocessing")
+        logger.info("Starting Data Loading and Preprocessing")
         vectorization_pipeline()
 
     # Step 2: Load the vectorized data
-    print(
+    logger.info(
         f"Loading pre-vectorized data from {settings.vectorization.vectorized_dir}..."
     )
     X_train, X_test, y_train, y_test = load_vectorized_data(
@@ -105,17 +107,17 @@ def main():
     results = train_test_evaluate_all_models(X_train, X_test, y_train, y_test)
 
     # Step 4: Create comparison table
-    print_section_header("Creating Result Comparison")
+    logger.info("Creating Result Comparison")
     results_dir = settings.output.results_dir
     create_comparison_table(results, results_dir)
 
     # Step 5: Create visualizations
     if settings.output.visualize_results:
-        print_section_header("Creating Visualizations")
-        print(f"Saving visualizations to {results_dir}...")
+        logger.info("Creating Visualizations")
+        logger.info(f"Saving visualizations to {results_dir}...")
         create_visualizations(pd.DataFrame(results), results_dir)
 
-    print("Analysis completed successfully.")
+    logger.info("Analysis completed successfully.")
 
     return results
 

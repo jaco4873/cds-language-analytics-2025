@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
 Script to train a Naive Bayes classifier on the Fake News dataset.
-This script loads pre-vectorized data created by the vectorize_data.py script
-and uses settings from the central configuration.
+This script uses settings from the central configuration.
 """
 
 import time
@@ -10,6 +9,7 @@ from sklearn.naive_bayes import MultinomialNB
 from settings import settings
 from utils.model_utils import evaluate_model
 from utils.common import ensure_dir
+from utils.logger import logger
 
 
 def train_naive_bayes(X_train, X_test, y_train, y_test) -> dict:
@@ -25,7 +25,7 @@ def train_naive_bayes(X_train, X_test, y_train, y_test) -> dict:
     ensure_dir(models_dir)
     ensure_dir(output_dir)
     # Create the model directly
-    print(
+    logger.info(
         f"Training Naive Bayes (alpha={nb_config.alpha}, fit_prior={nb_config.fit_prior})..."
     )
     model = MultinomialNB(alpha=nb_config.alpha, fit_prior=nb_config.fit_prior)
@@ -34,7 +34,7 @@ def train_naive_bayes(X_train, X_test, y_train, y_test) -> dict:
     start_time = time.time()
     model.fit(X_train, y_train)
     training_time = time.time() - start_time
-    print(f" Training completed in {training_time:.2f} seconds")
+    logger.info(f"Training completed in {training_time:.2f} seconds")
 
     # Evaluate and save the model and results
     metrics = evaluate_model(

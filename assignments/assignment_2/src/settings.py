@@ -11,8 +11,6 @@ All configuration is accessible through the `settings` instance.
 from typing import Literal, Any
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-
 class DataConfig(BaseSettings):
     """Data loading and preprocessing configuration."""
 
@@ -95,6 +93,7 @@ class OutputConfig(BaseSettings):
 class Settings(BaseSettings):
     """Main configuration class that contains all settings."""
 
+    log_level: str = "INFO"
     data: DataConfig = DataConfig()
     vectorization: VectorizationConfig = VectorizationConfig()
     models: ModelsConfig = ModelsConfig()

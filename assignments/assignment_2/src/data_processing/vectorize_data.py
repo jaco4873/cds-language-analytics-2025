@@ -14,6 +14,7 @@ from utils.vectorization_utils import (
     save_vectorized_data,
 )
 from utils.common import ensure_dir
+from utils.logger import logger
 from settings import settings
 
 def vectorization_pipeline():
@@ -23,20 +24,20 @@ def vectorization_pipeline():
     ensure_dir(output_dir)
 
     data_path = settings.data.csv_path
-    print(f"Loading Fake News dataset from {data_path}...")
+    logger.info(f"Loading Fake News dataset from {data_path}...")
     X, y = load_fake_news_data(data_path)
 
-    print("Splitting data into train and test sets...")
+    logger.info("Splitting data into train and test sets...")
     X_train, X_test, y_train, y_test = preprocess_split_data(X, y)
 
     X_train_vec, X_test_vec, vectorizer = vectorize_text(X_train, X_test)
 
-    print("Saving vectorized data...")
+    logger.info("Saving vectorized data...")
     save_vectorized_data(
         X_train_vec, X_test_vec, y_train, y_test, vectorizer, output_dir=output_dir
     )
 
-    print(f"Vectorized data saved to: {output_dir}")
+    logger.info(f"Vectorized data saved to: {output_dir}")
 
 
 if __name__ == "__main__":

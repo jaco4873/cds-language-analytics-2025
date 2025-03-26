@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-from utils.common import print_section_header
+from utils.logger import logger
 
 
 def create_comparison_table(results, results_dir) -> pd.DataFrame:
@@ -54,12 +54,13 @@ def create_comparison_table(results, results_dir) -> pd.DataFrame:
     # Create and display comparison table
     comparison_table = df[display_cols].rename(columns=rename_map).set_index("Model")
 
-    # Print the table
-    print_section_header("Model Performance Comparison")
-    print(comparison_table.round(4))
+    # Log the table
+    logger.info("Model Performance Comparison")
+    logger.info("\n" + comparison_table.round(4).to_string())
 
     # Save the table to CSV
-    comparison_table.to_csv(os.path.join(results_dir, "model_comparison.csv"))
-    print(f"\nComparison saved to {os.path.join(results_dir, 'model_comparison.csv')}")
+    output_path = os.path.join(results_dir, "model_comparison.csv")
+    comparison_table.to_csv(output_path)
+    logger.info(f"Comparison saved to {output_path}")
 
     return df

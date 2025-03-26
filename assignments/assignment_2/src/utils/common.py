@@ -5,11 +5,13 @@ This module contains general purpose helper functions used across the project.
 
 import os
 from settings import settings
+from utils.logger import logger
 
 
 def ensure_dir(directory):
     """Ensure that a directory exists, creating it if necessary."""
     if not os.path.exists(directory):
+        logger.debug(f"Creating directory: {directory}")
         os.makedirs(directory)
 
 
@@ -26,6 +28,7 @@ def ensure_all_dirs():
     for directory in dirs:
         ensure_dir(directory)
 
+    logger.debug("All required directories have been created/verified")
     return dirs
 
 
