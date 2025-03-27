@@ -59,7 +59,8 @@ class Settings(BaseSettings):
     
     # Generation Parameters
     DEFAULT_TOKENS: int = 100    # Number of tokens to generate
-    DEFAULT_TOP_K: int = 25      # Limit to top K tokens (None=disabled)
+    DEFAULT_TOP_K: int | None = 25      # Limit to top K tokens (None=disabled)
+    # Note: Only one of top_k or top_p should be enabled at a time
     DEFAULT_TOP_P: float | None = None  # Nucleus sampling threshold (None=disabled)
     DEFAULT_TEMPERATURE: float = 1.0  # Sampling temperature
     

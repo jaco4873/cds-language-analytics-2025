@@ -135,10 +135,27 @@ class NgramModel:
                 top_k: int | None = None,
                 top_p: float | None = None,
                 temperature: float = 1.0) -> str:
-        """Generate text with optional sampling methods"""
+        """Generate text with optional sampling methods
+        
+        Args:
+            seed: Starting sequence of tokens
+            tokens: Number of tokens to generate
+            top_k: If set, only sample from the k most likely tokens
+            top_p: If set, sample from the smallest set of tokens whose cumulative probability exceeds p
+            temperature: Softmax temperature (higher = more random, lower = more deterministic)
+            
+        Raises:
+            ValueError: If both top_k and top_p are specified, or if temperature <= 0
+        """
         if len(self.vocab) == 0:
             raise ValueError("Empty vocabulary - model needs training first")
             
+        if top_k is not None and top_p is not None:
+            raise ValueError("Cannot use both top-k and nucleus sampling. Please specify only one.")
+            
+        if temperature <= 0:
+            raise ValueError("Temperature must be positive")
+        
         if seed is None:
             # Random start from existing histories
             seed = random.choice(list(self.model.keys()))
@@ -168,9 +185,6 @@ class NgramModel:
                             break
                 
                 words, probs = zip(*sorted_items)
-                
-                if temperature <= 0:
-                    raise ValueError("Temperature must be positive")
                 
                 if temperature != 1.0:
                     probs = [p ** (1.0/temperature) for p in probs]

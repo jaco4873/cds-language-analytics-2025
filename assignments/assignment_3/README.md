@@ -145,12 +145,15 @@ DEFAULT_TEMPERATURE = 1.0   # Sampling temperature
 1. **Top-k Sampling**
    - Restricts to k most likely tokens
    - Example: `--top-k 25`
+   - Cannot be used with top-p sampling
 
 2. **Nucleus (Top-p) Sampling**
    - Dynamically selects vocabulary
    - Better for maintaining coherence
    - Example: `--top-p 0.9`
+   - Cannot be used with top-k sampling
 
+Note: Top-k and nucleus (top-p) sampling are mutually exclusive. The model will raise an error if both are specified.
 
 ## 🔍 Debugging & Error Handling
 
