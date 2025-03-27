@@ -119,7 +119,7 @@ class NgramModel:
                 word: (counts.get(word, 0) + 1) / (total + vocab_size)
                 for word in self.vocab
             }
-            # Log only the top 3 predictions
+            # Debug log the top 3 predictions
             top3 = dict(sorted(dist.items(), key=lambda x: x[1], reverse=True)[:3])
             logger.debug(f"Smoothed predictions for {history}: {top3}")
             return dist
@@ -168,6 +168,9 @@ class NgramModel:
                             break
                 
                 words, probs = zip(*sorted_items)
+                
+                if temperature <= 0:
+                    raise ValueError("Temperature must be positive")
                 
                 if temperature != 1.0:
                     probs = [p ** (1.0/temperature) for p in probs]
