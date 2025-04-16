@@ -33,7 +33,7 @@ fi
 
 echo "✅ uv is installed: $(uv --version)"
 
-# Create virtual environment with uv9
+# Create virtual environment with uv
 echo "🔨 Creating virtual environment and installing dependencies..."
 uv sync
 
