@@ -23,8 +23,8 @@ assignment_4/
 ├── src/                            # Source code
 │   ├── config/                     # Configuration
 │   │   └── settings.py             # Model and visualization settings
-│   ├── data/                       # Data handling
-│   │   └── loader.py               # Data loading utilities
+│   ├── utils/                      # Data handling
+│   │   └── data_loader.py          # Data loading utility
 │   ├── models/                     # Model definitions
 │   │   └── topic_model.py          # BERTopic model wrapper
 │   ├── visualization/              # Visualization tools

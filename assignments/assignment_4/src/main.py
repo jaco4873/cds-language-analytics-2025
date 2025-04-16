@@ -6,7 +6,7 @@ This module orchestrates the entire topic modeling workflow.
 import logging
 
 from src.config.settings import settings
-from src.data.loader import prepare_data
+from src.utils.data_loader import prepare_data
 from src.models.topic_model import (
     create_topic_model, fit_topic_model, add_topic_info, get_topic_info
 )
@@ -109,11 +109,11 @@ def run_topic_modeling() -> None:
         f.write(f"Number of unique categories: {len(unique_categories)}\n")
         
         f.write("\nTopics by Document Count:\n")
-        for i, (topic_id, topic_name, count) in enumerate(
+        for (topic_id, topic_name, count) in (
             [(t, topic_info[t]["Name"], topic_info[t]["Count"]) 
              for t in topic_info]
         ):
-            f.write(f"{i+1}. Topic {topic_id}: {topic_name} ({count} documents)\n")
+            f.write(f"Topic {topic_id}: {topic_name} ({count} documents)\n")
     
     logger.info("Topic modeling workflow completed successfully")
 
