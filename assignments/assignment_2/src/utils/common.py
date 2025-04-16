@@ -8,15 +8,29 @@ from settings import settings
 from utils.logger import logger
 
 
-def ensure_dir(directory):
-    """Ensure that a directory exists, creating it if necessary."""
+def ensure_dir(directory: str) -> None:
+    """
+    Ensure that a directory exists, creating it if necessary.
+    
+    Parameters:
+    -----------
+    directory : str
+        Path to the directory to ensure exists
+    """
     if not os.path.exists(directory):
         logger.debug(f"Creating directory: {directory}")
         os.makedirs(directory)
 
 
-def ensure_all_dirs():
-    """Ensure all necessary directories exist based on configuration."""
+def ensure_all_dirs() -> list[str]:
+    """
+    Ensure all necessary directories exist based on configuration.
+    
+    Returns:
+    --------
+    List[str]
+        List of created/verified directories
+    """
     dirs = [
         "data",
         settings.vectorization.vectorized_dir,
@@ -32,7 +46,7 @@ def ensure_all_dirs():
     return dirs
 
 
-def print_section_header(title):
+def print_section_header(title: str) -> None:
     """
     Print a formatted section header.
 

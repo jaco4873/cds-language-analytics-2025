@@ -5,6 +5,8 @@ Model utility functions for text classification tasks.
 import os
 import pickle
 from typing import Any
+import numpy as np
+from sklearn.base import BaseEstimator
 from sklearn.metrics import classification_report
 
 from utils.common import ensure_dir
@@ -12,17 +14,21 @@ from utils.logger import logger
 from settings import settings
 
 
-def save_model(model, model_name, models_dir=None) -> None:
+def save_model(
+    model: BaseEstimator, 
+    model_name: str, 
+    models_dir: str | None = None
+) -> None:
     """
     Save a trained model to disk.
 
     Parameters:
     -----------
-    model : trained model object
+    model : BaseEstimator
         The model to save
     model_name : str
         Name to use for the saved model file
-    models_dir : str, optional
+    models_dir : Optional[str]
         Directory to save the model
     """
     if models_dir is None:
@@ -37,19 +43,24 @@ def save_model(model, model_name, models_dir=None) -> None:
     logger.info(f"Model saved to {model_path}")
 
 
-def save_classification_report(y_true, y_pred, report_name, output_dir=None) -> None:
+def save_classification_report(
+    y_true: np.ndarray, 
+    y_pred: np.ndarray, 
+    report_name: str, 
+    output_dir: str | None = None
+) -> None:
     """
     Generate and save a classification report to a text file.
 
     Parameters:
     -----------
-    y_true : array-like
+    y_true : np.ndarray
         True labels
-    y_pred : array-like
+    y_pred : np.ndarray
         Predicted labels
     report_name : str
         Name to use for the report file
-    output_dir : str, optional
+    output_dir : str | None
         Directory to save the report
     """
     if output_dir is None:
@@ -74,7 +85,10 @@ def save_classification_report(y_true, y_pred, report_name, output_dir=None) -> 
     logger.info(f"Classification Report: \n{report}")
 
 
-def load_model(model_name, models_dir=None) -> Any:
+def load_model(
+    model_name: str, 
+    models_dir: str | None = None
+) -> Any:
     """
     Load a trained model from disk.
 
@@ -82,12 +96,12 @@ def load_model(model_name, models_dir=None) -> Any:
     -----------
     model_name : str
         Name of the model file to load
-    models_dir : str, optional
+    models_dir : str | None
         Directory to load the model from
 
     Returns:
     --------
-    model : trained model object
+    model : Any
         The loaded model
     """
     if models_dir is None:
@@ -108,26 +122,37 @@ def load_model(model_name, models_dir=None) -> Any:
 
 
 def evaluate_model(
-    model, X_test, y_test, model_name, training_time, models_dir, output_dir
-) -> dict:
+    model: BaseEstimator, 
+    X_test: np.ndarray, 
+    y_test: np.ndarray, 
+    model_name: str, 
+    training_time: float, 
+    models_dir: str, 
+    output_dir: str
+) -> dict[str, Any]:
     """
     Evaluate model, save results, and return metrics.
 
     Parameters:
     -----------
-    model : object
+    model : BaseEstimator
         Trained model to evaluate
-    X_test, y_test : testing data
+    X_test : np.ndarray
+        Test feature matrix
+    y_test : np.ndarray
+        Test labels
     model_name : str
         Name of the model for saving
     training_time : float
         Time taken for training the model
-    models_dir, output_dir : str
-        Directories for saving model and results
+    models_dir : str
+        Directory for saving model
+    output_dir : str
+        Directory for saving results
 
     Returns:
     --------
-    metrics : dict
+    metrics : dict[str, Any]
         Dictionary of model performance metrics
     """
     # Get predictions

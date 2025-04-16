@@ -4,49 +4,61 @@ Script to train a Naive Bayes classifier on the Fake News dataset.
 This script uses settings from the central configuration.
 """
 
-import time
+import numpy as np
 from sklearn.naive_bayes import MultinomialNB
 from settings import settings
-from utils.model_utils import evaluate_model
-from utils.common import ensure_dir
 from utils.logger import logger
+from utils.trainer_utils import train_and_evaluate_model
 
 
-def train_naive_bayes(X_train, X_test, y_train, y_test) -> dict:
-    """Function to train and evaluate the Naive Bayes model."""
+def train_naive_bayes(
+    X_train: np.ndarray, 
+    X_test: np.ndarray, 
+    y_train: np.ndarray, 
+    y_test: np.ndarray
+) -> dict:
+    """
+    Function to train and evaluate the Naive Bayes model.
+    
+    Parameters:
+    -----------
+    X_train : np.ndarray
+        Training feature matrix
+    X_test : np.ndarray
+        Test feature matrix
+    y_train : np.ndarray
+        Training labels
+    y_test : np.ndarray
+        Test labels
+        
+    Returns:
+    --------
+    dict
+        Dictionary of model performance metrics
+    """
     # Get configuration from settings
     nb_config = settings.models.naive_bayes
-
-    models_dir = settings.output.models_dir
-    output_dir = settings.output.output_dir
-    model_name = nb_config.name
-
-    # Ensure output directories exist
-    ensure_dir(models_dir)
-    ensure_dir(output_dir)
-    # Create the model directly
-    logger.info(
-        f"Training Naive Bayes (alpha={nb_config.alpha}, fit_prior={nb_config.fit_prior})..."
+    
+    # Create model info string for logging
+    model_info = f"Training Naive Bayes (alpha={nb_config.alpha}, fit_prior={nb_config.fit_prior})..."
+    
+    # Define model factory function that uses dict expansion
+    def create_model():
+        return MultinomialNB(
+            **nb_config.dict(exclude={"name", "enabled"})
+        )
+    
+    # Use the shared train and evaluate function
+    metrics = train_and_evaluate_model(
+        model_factory=create_model,
+        X_train=X_train,
+        X_test=X_test,
+        y_train=y_train,
+        y_test=y_test,
+        config=nb_config,
+        model_info=model_info
     )
-    model = MultinomialNB(alpha=nb_config.alpha, fit_prior=nb_config.fit_prior)
-
-    # Train the model
-    start_time = time.time()
-    model.fit(X_train, y_train)
-    training_time = time.time() - start_time
-    logger.info(f"Training completed in {training_time:.2f} seconds")
-
-    # Evaluate and save the model and results
-    metrics = evaluate_model(
-        model,
-        X_test,
-        y_test,
-        model_name,
-        training_time,
-        models_dir,
-        output_dir,
-    )
-
+    
     return metrics
 
 
