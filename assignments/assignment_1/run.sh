@@ -23,10 +23,18 @@ else
     echo "Virtual environment detected."
 fi
 
+# Get command line arguments
+LOG_LEVEL=${1:-INFO}  # Default to INFO if not provided
+
+echo "Running with log level: $LOG_LEVEL"
+
 # Run the main script with error handling
-if uv run src/main.py; then
+if uv run src/main.py --log-level "$LOG_LEVEL"; then
     echo "Analysis completed successfully!"
 else
     echo "Analysis failed with error code $?. Please check the logs."
     exit 1
 fi
+
+echo "To run with different log levels, use: ./run.sh [DEBUG|INFO|WARNING|ERROR|CRITICAL]"
+echo "Example: ./run.sh DEBUG"

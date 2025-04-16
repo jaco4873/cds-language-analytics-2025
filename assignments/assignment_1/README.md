@@ -40,16 +40,43 @@ This script will:
 
 **Running the analysis manually**
 
-The analysis can also be run directly via:
+The analysis can be run directly via:
 
 ```bash
+./run.sh [LOG_LEVEL]
+```
+
+Where `LOG_LEVEL` is optional and can be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL (default is INFO).
+
+Examples:
+```bash
+# Run with default INFO level
 ./run.sh
+
+# Run with DEBUG level for more detailed output
+./run.sh DEBUG
+
+# Run with WARNING level to see only warnings and errors
+./run.sh WARNING
 ```
 
 The script will:
 1. Process all text files in each subfolder of the corpus (a1, a2, a3, etc.)
 2. Extract the linguistic features
 3. Save a CSV file for each subfolder in the `output` directory
+
+### Advanced Usage
+
+You can also run the script directly with additional arguments:
+
+```bash
+python src/main.py --log-level DEBUG --corpus-dir path/to/corpus --output-dir path/to/output
+```
+
+Available arguments:
+- `--log-level`: Set logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+- `--corpus-dir`: Path to the corpus directory
+- `--output-dir`: Path to output directory for CSV files
 
 ## Analysis Details
 
@@ -82,6 +109,9 @@ The script generates one CSV file per subfolder in the `output` directory (14 fi
 - Named entities are counted as unique based on their lowercase text to avoid duplicates due to capitalization differences.
 - GPE (Geo-Political Entity) entities are included in the LOC (Location) count.
 - Relative frequencies are calculated per 100 words and rounded to 2 decimal places.
+- Optimized processing using spaCy's `pipe()` method for batch processing.
+- Disables unnecessary spaCy pipeline components (parser, lemmatizer) for better performance.
+- Configurable logging with different verbosity levels.
 
 ## Requirements
 

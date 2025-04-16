@@ -1,4 +1,4 @@
 Filename,RelFreq NOUN,RelFreq VERB,RelFreq ADJ,RelFreq ADV,No. Unique PER,No. Unique LOC,No. Unique ORG
-0219.b8.txt,17.84,10.88,8.22,7.03,7,11,6
-0318.b8.txt,19.71,13.29,7.88,4.95,1,2,1
-0158.b8.txt,19.96,12.14,7.81,4.4,4,4,3
+0219.b8.txt,17.84,9.62,8.22,7.03,7,11,6
+0318.b8.txt,19.71,11.37,7.88,4.95,1,2,1
+0158.b8.txt,19.96,10.23,7.81,4.4,4,4,3
