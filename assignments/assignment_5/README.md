@@ -57,7 +57,7 @@ The data preparation process ensures:
 
 **Baseline Model:**
 - TF-IDF vectorization with unigrams, bigrams, and trigrams (n-gram range: 1-3)
-- Bayesian hyperparameter optimization using BayesSearchCV with 5 initial points
+- Bayesian hyperparameter optimization using BayesSearchCV with 20 iterations using 3-fold cross-validation
 - Hyperparameters tuned include:
   - max_features: 5000-20000 features
   - min_df: 2-15 minimum document frequency
@@ -81,7 +81,7 @@ The baseline model applies sublinear TF scaling to term frequencies rather than 
   - AdamW optimizer with dynamic warmup (10% of total training steps)
   - Evaluation strategy: once per epoch
   - 3 training epochs (default)
-  - Max gradient norm clipping for training stability
+  - Gradient clipping with max_grad_norm=0.8 for training stability
 
 ### Visualization & Analysis
 
@@ -92,8 +92,12 @@ The project generates several visualizations to compare model performance:
    - Quantifies the performance difference between approaches
 
 2. **Review Length Performance** (review_length_performance.png):
-   - Compares model accuracy across different review length categories
+   - Compares model accuracy across different review length categories (0-100, 101-200, 201-300, 301-500, 501-1000, 1000+ words)
    - Reveals how text length affects performance for different model types
+
+3. **Confusion Matrices** (confusion_matrices.png):
+   - Normalized matrices showing class-specific performance
+   - Provides insight into model classification behavior across sentiment classes
 
 ## Getting Started
 
@@ -151,10 +155,12 @@ Our analysis reveals significant differences between the two approaches:
 
 | Model | Accuracy | Precision | Recall | F1 | Training Time |
 |-------|----------|-----------|--------|----|----|
-| Logistic Regression | 0.872 | 0.872 | 0.872 | 0.872 | ~4 seconds |
-| DistilBERT | 0.901 | 0.903 | 0.898 | 0.901 | ~30 minutes |
+| Logistic Regression | 0.887 | 0.887 | 0.887 | 0.887 | ~2.15 minutes* |
+| DistilBERT | 0.908 | 0.910 | 0.906 | 0.908 | ~35 minutes |
 
-The transformer model achieved approximately 2.9 percentage points higher performance in accuracy, with similar improvements across other metrics. However, this improvement comes at a substantial computational cost, with training time increasing from seconds to minutes.
+*Including Bayesian hyperparameter optimization with 20 iterations*
+
+The transformer model achieved approximately 2.1 percentage points higher performance in accuracy, with similar improvements across other metrics. However, this improvement comes at a substantial computational cost, with training time increasing from minutes to tens of minutes.
 
 ![Metrics Comparison](output/figures/metrics_comparison.png)
 
@@ -165,23 +171,24 @@ Our analysis of how review length affects model performance revealed interesting
 ![Review Length Performance](output/figures/review_length_performance.png)
 
 Key findings:
-- Both models struggle more with very short reviews (<50 words)
-- The transformer model shows the most significant advantage on medium-length reviews (100-300 words)
-- Performance difference narrows for very long reviews (>400 words)
+- Both models achieve peak accuracy (>95%) on medium-length reviews (201-300 words)
+- DistilBERT demonstrates stronger performance on longer reviews (501+ words)
+- The traditional TF-IDF model performs comparably or slightly better on shorter reviews (101-500 words)
+- Performance analysis suggests that medium-length reviews provide optimal information without excess noise
 
 ## Discussion
 
-The results demonstrate that while transformer models provide measurable performance improvements for sentiment analysis (~3% better accuracy), the magnitude of this improvement may not always justify their substantially higher computational requirements for all use cases.
+The results demonstrate that while transformer models provide measurable but modest performance improvements for sentiment analysis (~2.1% better accuracy), the magnitude of this improvement may not always justify their substantially higher computational requirements for all use cases.
 
 ### Implications
 
-1. **Resource Tradeoffs**: For applications requiring real-time processing or deployment on resource-constrained environments, the traditional pipeline remains highly competitive with 87.2% accuracy while training in seconds.
+1. **Resource Tradeoffs**: For applications requiring real-time processing or deployment on resource-constrained environments, the traditional pipeline remains highly competitive with 88.7% accuracy while training in approximately 2 minutes.
 
-2. **Review Length Sensitivity**: The transformer model's advantage is most pronounced for medium-length reviews, suggesting that very short texts might lack sufficient context for the attention mechanism to provide significant benefits.
+2. **Review Length Sensitivity**: The transformer model's advantage is most pronounced for longer reviews (501+ words), where attention mechanisms likely help capture long-range dependencies better than bag-of-words approaches.
 
-3. **Production Considerations**: The 4-second training time of the logistic regression model makes it suitable for frequent retraining with updated data, while the transformer approach requires more careful planning around when to retrain.
+3. **Production Considerations**: The relatively fast training time of the logistic regression model makes it suitable for frequent retraining with updated data, while the transformer approach requires more careful planning around when to retrain.
 
-4. **Diminishing Returns**: The ~3% accuracy improvement from transformers represents a 23.4% reduction in error rate, which may be significant for certain high-stakes applications but negligible for others.
+4. **Diminishing Returns**: The 2.1% accuracy improvement from transformers represents an 18.6% reduction in error rate, which may be significant for certain high-stakes applications but negligible for others.
 
 ### Limitations
 
@@ -189,6 +196,7 @@ The results demonstrate that while transformer models provide measurable perform
 - We focused only on binary sentiment classification
 - The transformer implementation uses a small-scale DistilBERT model rather than larger architectures
 - Fixed parameters were used for the transformer model, while the logistic regression pipeline receives full hyperparameter optimization
+- The sample distribution is highly uneven across length categories, which may affect the reliability of comparisons in the smallest categories
 
 ### Future Work
 Future extensions could explore:
