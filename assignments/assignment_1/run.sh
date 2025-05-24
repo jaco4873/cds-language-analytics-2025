@@ -15,10 +15,7 @@ if [ ! -d ".venv" ] && [ ! -d "venv" ]; then
     if [[ $run_setup == "y" || $run_setup == "Y" ]]; then
         echo "🔧 Running setup.sh..."
         bash setup.sh
-        if [ $? -ne 0 ]; then
-            echo "❌ Setup failed. Please check the errors and try again."
-            exit 1
-        fi
+        exit 0
     else
         echo "🛑 Exiting. Please run setup.sh before running this script."
         exit 1
