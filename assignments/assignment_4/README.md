@@ -39,6 +39,7 @@ Simply run the analysis script:
 ```
 
 That's it! The script will:
+
 1. Check if the environment is properly set up
 2. If not, it will offer to run the setup script for you
 3. Run the topic modeling analysis
@@ -72,6 +73,7 @@ REDUCE_FREQUENT_WORDS: bool = True  # Reduce impact of frequent words
 ```
 
 Both stopword removal approaches (standard stopwords via CountVectorizer and frequent word reduction via ClassTfidfTransformer) are used in this implementation, which helps produce cleaner topic representations by:
+
 1. Removing standard English stopwords like "the", "and", "of", etc.
 2. Reducing the impact of corpus-specific high-frequency terms that might not be traditional stopwords
 

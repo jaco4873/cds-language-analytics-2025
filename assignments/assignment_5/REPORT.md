@@ -132,11 +132,13 @@ The results demonstrate that while transformer models provide measurable but mod
 4. **Diminishing Returns**: The 2.1% accuracy improvement from transformers represents an 18.6% reduction in error rate, which may be significant for certain high-stakes applications but negligible for others.
 
 Several observations are notable:
+
 1. We observed training instability in the transformer, with gradient norm spikes reaching 23.5, suggesting potential benefit from more aggressive gradient clipping
 2. Analyzing Figure 2 reveals that both models achieve peak performance on medium-length reviews (201-300 words), suggesting this length provides optimal information without excess noise
 3. The sample distribution is highly uneven across length categories (n=6 for shortest vs. n=910 for longest), which may affect the reliability of comparisons in the smallest categories
 
 For practical implementation, decision factors should include:
+
 1. Available computational resources for training and inference
 2. Performance requirements (is the modest accuracy gain worth the resource investment?)
 3. Typical document length in the target application
@@ -144,6 +146,7 @@ For practical implementation, decision factors should include:
 
 ### Limitations
 Our study has several limitations:
+
 - The current analysis uses a simplified subset of the full IMDb dataset
 - We focused only on binary sentiment classification
 - The transformer implementation uses a small-scale DistilBERT model rather than larger architectures
@@ -152,6 +155,7 @@ Our study has several limitations:
 
 ### Future Work
 Future extensions could explore:
+
 - Fine-grained sentiment analysis beyond binary classification
 - Performance comparison on other domains beyond movie reviews
 - Hybrid approaches combining the speed of traditional methods with the power of transformers
@@ -162,6 +166,7 @@ Future extensions could explore:
 This study demonstrates that while transformer models do outperform traditional approaches for sentiment analysis, the performance gap is modest (~2.1 percentage points) and comes with substantially higher computational costs. The choice between approaches should be guided by specific application requirements, available resources, and the characteristics of the text being analyzed, particularly length. For many practical applications, especially those with shorter texts or resource constraints, traditional approaches remain competitive and cost-effective alternatives to transformer models.
 
 ## References
+
 - Maas, A. L., Daly, R. E., Pham, P. T., Huang, D., Ng, A. Y., & Potts, C. (2011). Learning Word Vectors for Sentiment Analysis. Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies, 142-150.
 - Devlin, J., Chang, M. W., Lee, K., & Toutanova, K. (2018). BERT: Pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805.
 - Sanh, V., Debut, L., Chaumond, J., & Wolf, T. (2019). DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. arXiv preprint arXiv:1910.01108.

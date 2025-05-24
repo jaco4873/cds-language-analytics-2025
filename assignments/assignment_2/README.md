@@ -71,12 +71,14 @@ If you prefer to run the process in separate steps:
 This project uses Pydantic Settings for type-safe, validated configuration. All settings are defined in `settings.py` with sensible defaults.
 
 The configuration includes:
+
 - Data loading parameters (test_size: 0.2, random_state: 42)
 - Vectorization settings (TF-IDF with 10,000 features)
 - Model parameters for Logistic Regression, Neural Network, and Naive Bayes
 - Output directory settings
 
 Users can modify configuration values by:
+
 1. Editing default values directly in `settings.py`
 2. Setting environment variables (prefixed with nested class names, e.g., `MODELS__NEURAL_NETWORK__MAX_ITER=500`)
 3. Creating a `.env` file with the desired overrides
@@ -98,6 +100,7 @@ This project performs binary classification on news articles to determine if the
    - Performance metrics include precision, recall, and F1-score
 
 After running the analysis, the following outputs are generated:
+
 - Performance Reports: Detailed classification reports for each model in `output/reports/` (precision, recall, F1-score per class)
 - Visualizations: Comparative performance charts in `output/figures/` including accuracy comparison bar charts and confusion matrices
 - Model Files: Serialized trained models saved to `output/models/` for future use or inference

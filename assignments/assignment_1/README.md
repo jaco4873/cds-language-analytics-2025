@@ -54,6 +54,7 @@ The analysis extracts two types of linguistic features from each text:
    - Organization entities (ORG)
 
 Key implementation details:
+
 - Metadata in angle brackets (`<>`) is removed during preprocessing
 - Named entities are counted as unique based on their lowercase form
 - Relative frequencies are calculated per 100 words and rounded to 2 decimal places

@@ -36,6 +36,7 @@ The easiest way to get started is to simply run:
 ./run.sh
 ```
 This script will:
+
 1. Check if setup is needed and run `setup.sh` automatically if required
 2. Download and prepare training data
 3. Train a model with default settings
@@ -85,6 +86,7 @@ The project employs n-gram language modeling, which analyzes sequences of n cons
 
 ### Training Process
 The training script processes text files and builds an n-gram model with the following features:
+
 - Configurable n-gram size (default: 3)
 - Optional Laplace smoothing for handling unseen n-grams
 - Optional Stupid Backoff strategy for more robust predictions
