@@ -102,16 +102,16 @@ if [ $exit_code -eq 0 ]; then
     echo "🏆 The text classification benchmark has completed successfully! 🏆"
     echo ""
     echo "📊 Results can be found in the following directories:"
-    echo "   📝 Classification reports: ./output/"
-    echo "   💾 Trained models: ./models/"
-    echo "   📈 Visualizations and comparisons: ./results/"
+    echo "   📝 Classification reports: ./output/reports"
+    echo "   💾 Trained models: ./output/models/"
+    echo "   📈 Visualizations: ./output/figures/"
     echo ""
-    echo "📋 To view the comparison results, check: ./results/model_comparison.csv"
+    echo "📋 To view the comparison results, check: ./output/reports/model_comparison.csv"
     
     # List visualization files
     echo ""
     echo "🖼️  Generated visualizations:"
-    ls -1 results/*.png | sed 's/^/   🔹 /'
+    ls -1 output/figures/*.png | sed 's/^/   🔹 /'
 else
     print_section "Analysis Failed" "❌"
     echo "❌ The analysis failed with error code $exit_code."
