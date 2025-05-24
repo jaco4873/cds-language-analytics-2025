@@ -54,7 +54,6 @@ def read_file(file_path: str) -> str:
         # Fallback to latin-1 encoding
         with open(file_path, "r", encoding="latin-1") as f:
             text = f.read()
-            logging.warning(f"File {file_path} read using latin-1 encoding")
     
     return clean_text(text)
 
