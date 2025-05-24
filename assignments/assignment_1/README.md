@@ -4,7 +4,7 @@
 This project analyzes the Uppsala Student English Corpus (USE) by extracting linguistic features from student texts using spaCy. The analysis focuses on part-of-speech frequencies and named entity recognition to provide quantitative insights into language usage patterns across different corpus sections.
 
 ## Data
-The Uppsala Student English Corpus (USE) contains texts written by Swedish university students of English. The corpus is organized into 14 subfolders (a1-a5, b1-b8, c1) representing different text categories and student levels. Each text file contains student writing with metadata enclosed in angle brackets.
+The Uppsala Student English Corpus (USE) contains texts written by Swedish university students of English. The corpus is organized into 14 subfolders (a1-a5, b1-b8, c1) representing different text categories and student levels. 
 
 ## Project Structure
 
@@ -34,11 +34,10 @@ To set up the project environment and run the analysis:
 ```bash
 ./run.sh [LOG_LEVEL]
 ```
-
-This script will create a virtual environment by invoking `setup.sh`, install dependencies, download the spaCy model, and optionally run the analysis.
-
-
 Where `LOG_LEVEL` is optional (DEBUG, INFO, WARNING, ERROR, CRITICAL; default is INFO).
+
+This script will create a virtual environment by invoking `setup.sh`, install dependencies, download the spaCy model, and prompt you to run the analysis.
+
 
 ## Methods
 The analysis extracts two types of linguistic features from each text:
