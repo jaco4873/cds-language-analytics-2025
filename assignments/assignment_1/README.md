@@ -1,6 +1,10 @@
 # Assignment 1: Extracting Linguistic Features using spaCy
 
-This project analyzes the Uppsala Student English Corpus (USE) using spaCy to extract linguistic features from text files. It processes multiple folders of text files and generates CSV reports with linguistic statistics.
+## Introduction
+This project analyzes the Uppsala Student English Corpus (USE) by extracting linguistic features from student texts using spaCy. The analysis focuses on part-of-speech frequencies and named entity recognition to provide quantitative insights into language usage patterns across different corpus sections.
+
+## Data
+The Uppsala Student English Corpus (USE) contains texts written by Swedish university students of English. The corpus is organized into 14 subfolders (a1-a5, b1-b8, c1) representing different text categories and student levels. Each text file contains student writing with metadata enclosed in angle brackets.
 
 ## Project Structure
 
@@ -24,78 +28,40 @@ This project analyzes the Uppsala Student English Corpus (USE) using spaCy to ex
 └── uv.lock                    # Lock file for dependencies
 ```
 
-## Quickstart
-
+## Getting Started
 To set up the project environment and run the analysis:
-
-```bash
-./setup.sh
-```
-
-This script will:
-1. Create a virtual environment
-2. Install all required dependencies
-3. Download the necessary spaCy language model
-4. Finally, it will prompt whether you would like to run the analysis.
-
-**Running the analysis manually**
-
-The analysis can be run directly via:
 
 ```bash
 ./run.sh [LOG_LEVEL]
 ```
 
-Where `LOG_LEVEL` is optional and can be one of: DEBUG, INFO, WARNING, ERROR, CRITICAL (default is INFO).
+This script will create a virtual environment by invoking `setup.sh`, install dependencies, download the spaCy model, and optionally run the analysis.
 
-Examples:
-```bash
-# Run with default INFO level
-./run.sh
 
-# Run with DEBUG level for more detailed output
-./run.sh DEBUG
+Where `LOG_LEVEL` is optional (DEBUG, INFO, WARNING, ERROR, CRITICAL; default is INFO).
 
-# Run with WARNING level to see only warnings and errors
-./run.sh WARNING
-```
+## Methods
+The analysis extracts two types of linguistic features from each text:
 
-The script will:
-1. Process all text files in each subfolder of the corpus (a1, a2, a3, etc.)
-2. Extract the linguistic features
-3. Save a CSV file for each subfolder in the `output` directory
-
-### Advanced Usage
-
-You can also run the script directly with additional arguments:
-
-```bash
-python src/main.py --log-level DEBUG --corpus-dir path/to/corpus --output-dir path/to/output
-```
-
-Available arguments:
-- `--log-level`: Set logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-- `--corpus-dir`: Path to the corpus directory
-- `--output-dir`: Path to output directory for CSV files
-
-## Analysis Details
-
-For each text file, the script extracts:
-
-1. **Relative Frequencies (per 100 words)**:
+1. Relative Frequencies (per 100 words) of:
    - Nouns (NOUN)
    - Verbs (VERB)
    - Adjectives (ADJ)
    - Adverbs (ADV)
 
-2. **Named Entity Counts**:
-   - Number of unique Person entities (PER)
-   - Number of unique Location entities (LOC)
-   - Number of unique Organization entities (ORG)
+2. Named Entity Counts of unique:
+   - Person entities (PER)
+   - Location entities (LOC), including Geo-Political Entities
+   - Organization entities (ORG)
 
-### Output
+Key implementation details:
+- Metadata in angle brackets (`<>`) is removed during preprocessing
+- Named entities are counted as unique based on their lowercase form
+- Relative frequencies are calculated per 100 words and rounded to 2 decimal places
+- Processing is optimized using spaCy's `pipe()` method and disabling unnecessary pipeline components
 
-The script generates one CSV file per subfolder in the `output` directory (14 files total). Each CSV file contains a table with the following columns:
+## Results
+The analysis generates 14 CSV files (one per subfolder) in the `output` directory. Each file contains the extracted features for every text in that subfolder:
 
 | Filename | RelFreq NOUN | RelFreq VERB | RelFreq ADJ | RelFreq ADV | No. Unique PER | No. Unique LOC | No. Unique ORG |
 |----------|-------------|-------------|------------|------------|---------------|--------------|--------------|
@@ -103,15 +69,7 @@ The script generates one CSV file per subfolder in the `output` directory (14 fi
 | file2.txt | 22.1 | 19.5 | 9.8 | 6.2 | 5 | 4 | 0 |
 | ... | ... | ... | ... | ... | ... | ... | ... |
 
-### Implementation Details
-
-- The script removes metadata enclosed in angle brackets (`<>`) from the text files before processing.
-- Named entities are counted as unique based on their lowercase text to avoid duplicates due to capitalization differences.
-- GPE (Geo-Political Entity) entities are included in the LOC (Location) count.
-- Relative frequencies are calculated per 100 words and rounded to 2 decimal places.
-- Optimized processing using spaCy's `pipe()` method for batch processing.
-- Disables unnecessary spaCy pipeline components (parser, lemmatizer) for better performance.
-- Configurable logging with different verbosity levels.
+These metrics provide quantitative data that could be used for further comparative analysis of writing styles, language proficiency levels, or genre differences across the corpus.
 
 ## Requirements
 
