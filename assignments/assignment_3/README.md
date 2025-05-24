@@ -175,6 +175,7 @@ In general, while the model captures vocabulary and occasional grammatical patte
 
 ## Troubleshooting Steps
 If you encounter issues:
+
 1. Check console error messages
 2. Run `./setup.sh` to reset environment
 3. Delete .venv and rerun setup if needed
