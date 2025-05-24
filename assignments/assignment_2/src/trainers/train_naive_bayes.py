@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Script to train a Naive Bayes classifier on the Fake News dataset.
 This script uses settings from the central configuration.
@@ -11,14 +10,11 @@ from utils.trainer_utils import train_and_evaluate_model
 
 
 def train_naive_bayes(
-    X_train: np.ndarray, 
-    X_test: np.ndarray, 
-    y_train: np.ndarray, 
-    y_test: np.ndarray
+    X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray
 ) -> dict:
     """
     Function to train and evaluate the Naive Bayes model.
-    
+
     Parameters:
     -----------
     X_train : np.ndarray
@@ -29,7 +25,7 @@ def train_naive_bayes(
         Training labels
     y_test : np.ndarray
         Test labels
-        
+
     Returns:
     --------
     dict
@@ -37,16 +33,14 @@ def train_naive_bayes(
     """
     # Get configuration from settings
     nb_config = settings.models.naive_bayes
-    
+
     # Create model info string for logging
     model_info = f"Training Naive Bayes (alpha={nb_config.alpha}, fit_prior={nb_config.fit_prior})..."
-    
+
     # Define model factory function
     def create_model():
-        return MultinomialNB(
-            **nb_config.dict(exclude={"name", "enabled"})
-        )
-    
+        return MultinomialNB(**nb_config.dict(exclude={"name", "enabled"}))
+
     # Use the shared train and evaluate function
     metrics = train_and_evaluate_model(
         model_factory=create_model,
@@ -55,9 +49,9 @@ def train_naive_bayes(
         y_train=y_train,
         y_test=y_test,
         config=nb_config,
-        model_info=model_info
+        model_info=model_info,
     )
-    
+
     return metrics
 
 

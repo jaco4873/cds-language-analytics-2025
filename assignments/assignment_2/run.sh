@@ -92,11 +92,12 @@ echo "🔥 Running the complete text classification benchmark pipeline..."
 echo "⏳ This may take several minutes depending on your hardware."
 echo ""
 
-# Execute main.py with progress feedback
-(uv run src/main.py) &
+# Execute main.py and wait for it to complete
+uv run src/main.py
+exit_code=$?
 
 # Check if the command succeeded
-if [ $? -eq 0 ]; then
+if [ $exit_code -eq 0 ]; then
     print_section "Analysis Complete" "🎉"
     echo "🏆 The text classification benchmark has completed successfully! 🏆"
     echo ""
@@ -113,7 +114,7 @@ if [ $? -eq 0 ]; then
     ls -1 results/*.png | sed 's/^/   🔹 /'
 else
     print_section "Analysis Failed" "❌"
-    echo "❌ The analysis failed with error code $?."
+    echo "❌ The analysis failed with error code $exit_code."
     echo "🔍 Please check the error messages above for more information."
     exit 1
 fi

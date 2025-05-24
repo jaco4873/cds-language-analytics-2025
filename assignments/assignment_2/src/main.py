@@ -73,7 +73,7 @@ def main():
     """Main function to run the entire pipeline."""
 
     logger.info("Evaluating multiple classifiers on the Fake News Dataset.")
-    logger.info("Using settings from config.yaml")
+    logger.info("Using Pydantic settings with default values")
     logger.info(f"Log level: {settings.log_level}")
 
     # Log a summary of key settings
@@ -102,14 +102,13 @@ def main():
 
     # Step 4: Create comparison table
     logger.info("Creating Result Comparison")
-    results_dir = settings.output.results_dir
-    create_comparison_table(results, results_dir)
+    create_comparison_table(results)
 
     # Step 5: Create visualizations
     if settings.output.visualize_results:
         logger.info("Creating Visualizations")
-        logger.info(f"Saving visualizations to {results_dir}...")
-        create_visualizations(pd.DataFrame(results), results_dir)
+        logger.info(f"Saving visualizations to {settings.output.figures_dir}...")
+        create_visualizations(pd.DataFrame(results))
 
     logger.info("Analysis completed successfully.")
 

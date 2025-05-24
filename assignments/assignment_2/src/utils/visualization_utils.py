@@ -8,12 +8,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from utils.logger import logger
+from settings import settings
 
 # Set style for plots
 sns.set_style("whitegrid")
 
 
-def create_visualizations(df, results_dir) -> None:
+def create_visualizations(df, figures_dir=None) -> None:
     """
     Create and save visualizations comparing model performance.
 
@@ -21,16 +22,19 @@ def create_visualizations(df, results_dir) -> None:
     -----------
     df : pandas.DataFrame
         DataFrame containing model metrics
-    results_dir : str
+    figures_dir : str
         Directory to save visualizations
     """
-    logger.info(f"Creating visualizations in {results_dir}...")
+    if figures_dir is None:
+        figures_dir = settings.output.figures_dir
 
-    create_accuracy_comparison(df, results_dir)
-    create_f1_comparison(df, results_dir)
-    create_precision_recall_comparison(df, results_dir)
+    logger.info(f"Creating visualizations in {figures_dir}...")
 
-    logger.info(f"Visualizations saved to {results_dir}")
+    create_accuracy_comparison(df, figures_dir)
+    create_f1_comparison(df, figures_dir)
+    create_precision_recall_comparison(df, figures_dir)
+
+    logger.info(f"Visualizations saved to {figures_dir}")
 
 
 def create_barplot(
@@ -41,7 +45,7 @@ def create_barplot(
     xlabel,
     ylabel,
     filename,
-    results_dir,
+    figures_dir,
     hue=None,
     palette=None,
     figsize=(10, 6),
@@ -78,7 +82,7 @@ def create_barplot(
         plt.legend(title=hue)
 
     plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, filename), dpi=300)
+    plt.savefig(os.path.join(figures_dir, filename), dpi=300)
     plt.close()
 
 
@@ -95,7 +99,7 @@ def prepare_class_data(df, value_cols) -> pd.DataFrame:
     return pd.DataFrame(data)
 
 
-def create_accuracy_comparison(df, results_dir) -> None:
+def create_accuracy_comparison(df, figures_dir) -> None:
     """Create and save accuracy comparison chart."""
     create_barplot(
         data=df.copy(),
@@ -105,12 +109,12 @@ def create_accuracy_comparison(df, results_dir) -> None:
         xlabel="Model",
         ylabel="Accuracy",
         filename="accuracy_comparison.png",
-        results_dir=results_dir,
+        figures_dir=figures_dir,
         hue="description",
     )
 
 
-def create_f1_comparison(df, results_dir) -> None:
+def create_f1_comparison(df, figures_dir) -> None:
     """Create and save F1-score comparison chart."""
     f1_df = prepare_class_data(df, ["real_f1", "fake_f1"])
     f1_df = f1_df.rename(columns={"Value": "F1-Score"})
@@ -123,14 +127,14 @@ def create_f1_comparison(df, results_dir) -> None:
         xlabel="Model",
         ylabel="F1-Score",
         filename="f1_score_comparison.png",
-        results_dir=results_dir,
+        figures_dir=figures_dir,
         hue="Class",
         palette="Set2",
         figsize=(12, 6),
     )
 
 
-def create_precision_recall_comparison(df, results_dir) -> None:
+def create_precision_recall_comparison(df, figures_dir) -> None:
     """Create and save precision-recall comparison chart."""
     plt.figure(figsize=(14, 10))
 
@@ -171,5 +175,5 @@ def create_precision_recall_comparison(df, results_dir) -> None:
         plt.legend(title="Class")
 
     plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, "precision_recall_comparison.png"), dpi=300)
+    plt.savefig(os.path.join(figures_dir, "precision_recall_comparison.png"), dpi=300)
     plt.close()

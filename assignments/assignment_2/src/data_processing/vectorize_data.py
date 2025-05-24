@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Script to vectorize the Fake News dataset and save the results for reuse.
 This handles the data preprocessing and feature extraction step,
@@ -16,6 +15,7 @@ from utils.vectorization_utils import (
 from utils.common import ensure_dir
 from utils.logger import logger
 from settings import settings
+
 
 def vectorization_pipeline():
     """Main function to vectorize and save data."""

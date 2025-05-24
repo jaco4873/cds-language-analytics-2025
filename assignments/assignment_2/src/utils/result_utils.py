@@ -2,9 +2,11 @@ import pandas as pd
 import os
 
 from utils.logger import logger
+from settings import settings
+from utils.common import ensure_dir
 
 
-def create_comparison_table(results, results_dir) -> pd.DataFrame:
+def create_comparison_table(results, reports_dir=None) -> pd.DataFrame:
     """
     Create and save a table comparing model performance.
 
@@ -12,7 +14,7 @@ def create_comparison_table(results, results_dir) -> pd.DataFrame:
     -----------
     results : list of dict
         List of dictionaries containing model metrics
-    results_dir : str
+    reports_dir : str
         Directory to save the comparison table
 
     Returns:
@@ -20,6 +22,12 @@ def create_comparison_table(results, results_dir) -> pd.DataFrame:
     df : pandas.DataFrame
         DataFrame containing the comparison table
     """
+    if reports_dir is None:
+        reports_dir = settings.output.reports_dir
+
+    # Ensure directory exists
+    ensure_dir(reports_dir)
+
     # Create DataFrame from results
     df = pd.DataFrame(results)
 
@@ -59,7 +67,7 @@ def create_comparison_table(results, results_dir) -> pd.DataFrame:
     logger.info("\n" + comparison_table.round(4).to_string())
 
     # Save the table to CSV
-    output_path = os.path.join(results_dir, "model_comparison.csv")
+    output_path = os.path.join(reports_dir, "model_comparison.csv")
     comparison_table.to_csv(output_path)
     logger.info(f"Comparison saved to {output_path}")
 

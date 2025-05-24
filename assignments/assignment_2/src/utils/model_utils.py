@@ -15,9 +15,7 @@ from settings import settings
 
 
 def save_model(
-    model: BaseEstimator, 
-    model_name: str, 
-    models_dir: str | None = None
+    model: BaseEstimator, model_name: str, models_dir: str | None = None
 ) -> None:
     """
     Save a trained model to disk.
@@ -44,10 +42,10 @@ def save_model(
 
 
 def save_classification_report(
-    y_true: np.ndarray, 
-    y_pred: np.ndarray, 
-    report_name: str, 
-    output_dir: str | None = None
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    report_name: str,
+    reports_dir: str | None = None,
 ) -> None:
     """
     Generate and save a classification report to a text file.
@@ -60,14 +58,14 @@ def save_classification_report(
         Predicted labels
     report_name : str
         Name to use for the report file
-    output_dir : str | None
+    reports_dir : str | None
         Directory to save the report
     """
-    if output_dir is None:
-        output_dir = settings.output.output_dir
+    if reports_dir is None:
+        reports_dir = settings.output.reports_dir
 
-    ensure_dir(output_dir)
-    report_path = os.path.join(output_dir, f"{report_name}.txt")
+    ensure_dir(reports_dir)
+    report_path = os.path.join(reports_dir, f"{report_name}.txt")
 
     # Generate the classification report
     report = classification_report(y_true, y_pred, target_names=["REAL", "FAKE"])
@@ -85,10 +83,7 @@ def save_classification_report(
     logger.info(f"Classification Report: \n{report}")
 
 
-def load_model(
-    model_name: str, 
-    models_dir: str | None = None
-) -> Any:
+def load_model(model_name: str, models_dir: str | None = None) -> Any:
     """
     Load a trained model from disk.
 
@@ -122,13 +117,13 @@ def load_model(
 
 
 def evaluate_model(
-    model: BaseEstimator, 
-    X_test: np.ndarray, 
-    y_test: np.ndarray, 
-    model_name: str, 
-    training_time: float, 
-    models_dir: str, 
-    output_dir: str
+    model: BaseEstimator,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    model_name: str,
+    training_time: float,
+    models_dir: str | None = None,
+    reports_dir: str | None = None,
 ) -> dict[str, Any]:
     """
     Evaluate model, save results, and return metrics.
@@ -145,9 +140,9 @@ def evaluate_model(
         Name of the model for saving
     training_time : float
         Time taken for training the model
-    models_dir : str
+    models_dir : str | None
         Directory for saving model
-    output_dir : str
+    reports_dir : str | None
         Directory for saving results
 
     Returns:
@@ -155,6 +150,11 @@ def evaluate_model(
     metrics : dict[str, Any]
         Dictionary of model performance metrics
     """
+    if models_dir is None:
+        models_dir = settings.output.models_dir
+    if reports_dir is None:
+        reports_dir = settings.output.reports_dir
+
     # Get predictions
     y_pred = model.predict(X_test)
 
@@ -189,7 +189,7 @@ def evaluate_model(
     logger.info(f"Fake F1-Score: {metrics['fake_f1']:.4f}")
     logger.info(f"Model saved to: {os.path.join(models_dir, model_name + '.pkl')}")
     logger.info(
-        f"Classification report saved to: {os.path.join(output_dir, model_name + '_report.txt')}"
+        f"Classification report saved to: {os.path.join(reports_dir, model_name + '_report.txt')}"
     )
 
     # Save model
@@ -197,6 +197,6 @@ def evaluate_model(
 
     # Save classification report
     report_name = f"{model_name}_report"
-    save_classification_report(y_test, y_pred, report_name, output_dir)
+    save_classification_report(y_test, y_pred, report_name, reports_dir)
 
     return metrics

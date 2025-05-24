@@ -11,7 +11,7 @@ from utils.logger import logger
 def ensure_dir(directory: str) -> None:
     """
     Ensure that a directory exists, creating it if necessary.
-    
+
     Parameters:
     -----------
     directory : str
@@ -25,7 +25,7 @@ def ensure_dir(directory: str) -> None:
 def ensure_all_dirs() -> list[str]:
     """
     Ensure all necessary directories exist based on configuration.
-    
+
     Returns:
     --------
     List[str]
@@ -34,9 +34,10 @@ def ensure_all_dirs() -> list[str]:
     dirs = [
         "data",
         settings.vectorization.vectorized_dir,
-        settings.output.models_dir,
         settings.output.output_dir,
-        settings.output.results_dir,
+        settings.output.models_dir,
+        settings.output.reports_dir,
+        settings.output.figures_dir,
     ]
 
     for directory in dirs:
@@ -44,17 +45,3 @@ def ensure_all_dirs() -> list[str]:
 
     logger.debug("All required directories have been created/verified")
     return dirs
-
-
-def print_section_header(title: str) -> None:
-    """
-    Print a formatted section header.
-
-    Parameters:
-    -----------
-    title : str
-        Title for the section header
-    """
-    print("\n" + "=" * 80)
-    print(f" {title}")
-    print("=" * 80)

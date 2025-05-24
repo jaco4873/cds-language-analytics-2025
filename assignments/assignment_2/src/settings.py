@@ -1,16 +1,16 @@
 """
 Centralized configuration using Pydantic Settings.
 
-This module defines the configuration model and loads settings from:
-1. config.yaml file (primary source)
-2. Environment variables (fallback/override)
+This module defines configuration models with defaults for all project settings.
+Environment variables can be used to override these defaults.
 
 All configuration is accessible through the `settings` instance.
 """
 
-from typing import Literal, Any
-from pydantic import model_validator
+from typing import Literal
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
 class DataConfig(BaseSettings):
     """Data loading and preprocessing configuration."""
 
@@ -84,9 +84,10 @@ class ModelsConfig(BaseSettings):
 class OutputConfig(BaseSettings):
     """Output and results configuration."""
 
-    models_dir: str = "models"
     output_dir: str = "output"
-    results_dir: str = "results"
+    models_dir: str = "output/models"
+    reports_dir: str = "output/reports"
+    figures_dir: str = "output/figures"
     visualize_results: bool = True
 
 
@@ -102,34 +103,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_nested_delimiter="__", env_file=".env", extra="ignore"
     )
-
-    @model_validator(mode="before")
-    @classmethod
-    def load_from_yaml(cls, values: dict[str, Any]) -> dict[str, Any]:
-        """Load configuration from YAML file."""
-        if isinstance(values, dict):
-            return values
-
-    @staticmethod
-    def _update_nested_dict(
-        base_dict: dict[str, Any], update_dict: dict[str, Any]
-    ) -> None:
-        """
-        Update a nested dictionary recursively.
-
-        Args:
-            base_dict: The dictionary to update
-            update_dict: The dictionary with updates
-        """
-        for key, value in update_dict.items():
-            if (
-                key in base_dict
-                and isinstance(base_dict[key], dict)
-                and isinstance(value, dict)
-            ):
-                Settings._update_nested_dict(base_dict[key], value)
-            else:
-                base_dict[key] = value
 
 
 # Create a singleton instance

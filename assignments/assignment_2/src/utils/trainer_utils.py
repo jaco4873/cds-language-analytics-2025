@@ -15,37 +15,35 @@ from settings import settings
 def setup_training_environment(config: Any) -> tuple[str, str, str]:
     """
     Set up and ensure existence of training environment directories.
-    
+
     Parameters:
     -----------
     config : Any
         Configuration object with model settings
-        
+
     Returns:
     --------
     tuple[str, str, str]
-        Tuple containing (models_dir, output_dir, model_name)
+        Tuple containing (models_dir, reports_dir, model_name)
     """
     # Set up directories from settings
     models_dir = settings.output.models_dir
-    output_dir = settings.output.output_dir
+    reports_dir = settings.output.reports_dir
     model_name = config.name
 
     # Ensure output directories exist
     ensure_dir(models_dir)
-    ensure_dir(output_dir)
-    
-    return models_dir, output_dir, model_name
+    ensure_dir(reports_dir)
+
+    return models_dir, reports_dir, model_name
 
 
 def train_with_timing(
-    model: BaseEstimator, 
-    X_train: np.ndarray, 
-    y_train: np.ndarray
+    model: BaseEstimator, X_train: np.ndarray, y_train: np.ndarray
 ) -> tuple[BaseEstimator, float]:
     """
     Train model with timing.
-    
+
     Parameters:
     -----------
     model : BaseEstimator
@@ -54,7 +52,7 @@ def train_with_timing(
         Training features
     y_train : np.ndarray
         Training labels
-        
+
     Returns:
     --------
     tuple[BaseEstimator, float]
@@ -65,7 +63,7 @@ def train_with_timing(
     model.fit(X_train, y_train)
     training_time = time.time() - start_time
     logger.info(f"Training completed in {training_time:.2f} seconds")
-    
+
     return model, training_time
 
 
@@ -76,11 +74,11 @@ def train_and_evaluate_model(
     y_train: np.ndarray,
     y_test: np.ndarray,
     config: Any,
-    model_info: str | None = None
+    model_info: str | None = None,
 ) -> dict[str, Any]:
     """
     Complete model training pipeline with shared boilerplate code.
-    
+
     Parameters:
     -----------
     model_factory : Callable[[], BaseEstimator]
@@ -97,34 +95,34 @@ def train_and_evaluate_model(
         Configuration object with model settings
     model_info : Optional[str]
         Optional string with model info to log
-        
+
     Returns:
     --------
     Dict[str, Any]
         Dictionary of model performance metrics
     """
     # Setup directories
-    models_dir, output_dir, model_name = setup_training_environment(config)
-    
+    models_dir, reports_dir, model_name = setup_training_environment(config)
+
     # Log model information if provided
     if model_info:
         logger.info(model_info)
-    
+
     # Create model
     model = model_factory()
-    
+
     # Train model with timing
     model, training_time = train_with_timing(model, X_train, y_train)
-    
+
     # If the model has n_iter_ attribute (convergence info), log it
-    if hasattr(model, 'n_iter_'):
+    if hasattr(model, "n_iter_"):
         if model.n_iter_ < config.max_iter:
             logger.info(f"Convergence achieved after {model.n_iter_} iterations")
         else:
             logger.warning(
                 f"Maximum iterations ({config.max_iter}) reached without convergence"
             )
-    
+
     # Evaluate and save the model and results
     metrics = evaluate_model(
         model,
@@ -133,7 +131,7 @@ def train_and_evaluate_model(
         model_name,
         training_time,
         models_dir,
-        output_dir,
+        reports_dir,
     )
-    
-    return metrics 
+
+    return metrics
