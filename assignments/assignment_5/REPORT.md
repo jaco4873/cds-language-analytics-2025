@@ -110,6 +110,7 @@ Our analysis of how review length affects model performance showed interesting p
 *Figure 2: Model accuracy across different review length categories*
 
 Key findings:
+
 - Both models achieve peak accuracy (>95%) on medium-length reviews (201-300 words)
 - DistilBERT demonstrates stronger performance on longer reviews (501+ words)
 - The traditional TF-IDF model performs comparably or slightly better on shorter reviews (101-500 words)
