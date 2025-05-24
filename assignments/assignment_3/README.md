@@ -139,36 +139,35 @@ uv run python -m src.scripts.generate gutenberg-model \
 The default 3-gram model trained on the Gutenberg corpus demonstrates the effects of different generation parameters. Below are sample outputs with varying configurations:
 
 ### Default Settings (top-k=25, temperature=1.0)
-```
-particularly poetical grandpapas pell-mell Jattir kindles simile recklesse what Cumberland Vane, jailer never-broken
-Cries pell-mell vicarage Calues Jattir, Maides Cumberland implicit gauntleted jailer Jattir implicit jailer, pell-mell
-recklesse longevity simile Calues tousled vnkindest himself.
-```
+
+    particularly poetical grandpapas pell-mell Jattir kindles simile recklesse what Cumberland Vane, jailer never-broken
+    Cries pell-mell vicarage Calues Jattir, Maides Cumberland implicit gauntleted jailer Jattir implicit jailer, pell-mell
+    recklesse longevity simile Calues tousled vnkindest himself.
+
 The default settings produce text with a mix of archaic terms and proper nouns, showing no coherence. The model appears to be generating disconnected words from the training corpus without meaningful structure.
 
 
 ### High Temperature (top-k=50, temperature=1.2)
-```
-laid help Ashurites cupbearers Beyond the Pronounce Pronounce Partners twigging deserting alienated from Lucy prophecies 
-anthropologists adioyn duels bearing in bearing Even so ye Free-thought dissention sciential conditioning line-knife
-bolled Beyond THAT Free-thought bearing, who is the very time 17:5 wedding Pronounce boades bolled...
-```
+
+    laid help Ashurites cupbearers Beyond the Pronounce Pronounce Partners twigging deserting alienated from Lucy prophecies 
+    anthropologists adioyn duels bearing in bearing Even so ye Free-thought dissention sciential conditioning line-knife
+    bolled Beyond THAT Free-thought bearing, who is the very time 17:5 wedding Pronounce boades bolled...
+
 In theory, higher temperature should increase randomness and result in more diverse word combinations. As we can see, the text remains  incoherent. The repetition of words like "Pronounce" and "bearing" suggests the model is still heavily influenced by frequency patterns in the training data.
 
 
 ### Guided Generation with Seed Text
-```
-Once upon a time, or on the LORD from the land of the gate With STILL advantaged STILL Pertains to Baalah jackets
-thatch Dowrie Weak 12:35 A flailings 27:19 yeelding 12:35 Baalah Pertains Recompence today...
-```
+
+    Once upon a time, or on the LORD from the land of the gate With STILL advantaged STILL Pertains to Baalah jackets
+    thatch Dowrie Weak 12:35 A flailings 27:19 yeelding 12:35 Baalah Pertains Recompence today...
+
 Despite starting with a familiar narrative seed phrase, the model immediately loses coherence and diverts to biblical-style text with random numbers (likely verse references) and archaic terms. This demonstrates the model's inability to maintain thematic consistency even with explicit guidance.
 
 ### Conservative Settings (top-k=10, temperature=0.7)
-```
-the temporary PUNISHMENT confirmed to nick 105:38 echoes still confirmed, no one could fix PUNISHMENT confirmed. 
-As to the king had at first she thought it was a great deal of flour mingled with oil, and the LORD, and the other, 
-in his hand. "I do not think it is written in the house of their hands..."
-```
+
+    the temporary PUNISHMENT confirmed to nick 105:38 echoes still confirmed, no one could fix PUNISHMENT confirmed. 
+    As to the king had at first she thought it was a great deal of flour mingled with oil, and the LORD, and the other, 
+    in his hand. "I do not think it is written in the house of their hands..."
 
 With more conservative settings (lower temperature and fewer top-k options), we would expect more predictable text. While there are occasional glimpses of sentence-like structures and some biblical phrasings that appear more complete, the output remains fundamentally incoherent. 
 
