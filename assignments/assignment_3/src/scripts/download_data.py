@@ -24,7 +24,7 @@ def save_gutenberg_texts(fileids: list[str]):
         # Get the raw text
         text = gutenberg.raw(fileid)
         
-        # Create filename without the .txt extension to avoid double extension
+        # Create filename
         filename = Path(fileid).stem + ".txt"
         output_path = gutenberg_dir / filename
         
