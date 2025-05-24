@@ -68,21 +68,28 @@ else
     fi
 fi
 
-# Check for training data
-print_section "Data Check" "📊"
-if [ -z "$(ls -A data/gutenberg/*.txt 2>/dev/null)" ]; then
-    echo "⚠️  Warning: No text files found in data/gutenberg directory."
-    echo "📝 Please add some .txt files to data/gutenberg before proceeding."
-    echo "❌ Exiting. Cannot continue without training data."
-    exit 1
-else
-    echo "✅ Training data found in data/gutenberg."
-fi
-
 # Ensure required directories exist
 print_section "Directory Setup" "📁"
 mkdir -p data/gutenberg models output
 echo "✅ Required directories have been created."
+
+# Check for training data
+print_section "Data Check" "📊"
+if [ -z "$(ls -A data/gutenberg/*.txt 2>/dev/null)" ]; then
+    echo "⚠️  No text files found in data/gutenberg directory."
+    echo "📥 Downloading Gutenberg dataset..."
+    python -m src.scripts.download_data
+    
+    # Verify data was downloaded
+    if [ -z "$(ls -A data/gutenberg/*.txt 2>/dev/null)" ]; then
+        echo "❌ Data download failed. Cannot continue without training data."
+        exit 1
+    else
+        echo "✅ Training data downloaded successfully."
+    fi
+else
+    echo "✅ Training data found in data/gutenberg."
+fi
 
 # Run the training
 print_section "Training Model" "🚀"
@@ -144,7 +151,7 @@ if [ $? -eq 0 ]; then
         echo "🔍 Please check the error messages above for more information."
         exit 1
     fi
-    
+
     print_section "Process Complete" "🎉"
     echo "🏆 The n-gram language model has been trained and tested successfully!"
     echo ""
@@ -229,6 +236,7 @@ else
     echo "🔍 Please check the error messages above for more information."
     exit 1
 fi
+
 
 echo "
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
