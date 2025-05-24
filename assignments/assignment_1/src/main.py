@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Assignment 1: Extracting linguistic features using spaCy
 
