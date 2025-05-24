@@ -30,7 +30,7 @@ assignments/assignment_3/
 └── run.sh           # Training/testing script
 ```
 
-## Instructions/Getting Started
+## Getting Started
 The easiest way to get started is to simply run:
 ```bash
 ./run.sh
@@ -61,7 +61,7 @@ uv run python -m src.scripts.generate gutenberg-model \
     --temperature 0.9
 ```
 
-## Configuration
+### Configuration
 All default settings can be found in `src/config/settings.py`:
 
 ```python

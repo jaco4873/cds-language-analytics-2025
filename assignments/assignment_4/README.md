@@ -51,7 +51,6 @@ No manual environment setup needed - everything is handled automatically.
 If you prefer to set up the environment separately:
 
 ```bash
-chmod +x setup.sh
 ./setup.sh
 ```
 
@@ -61,7 +60,7 @@ Then run the analysis:
 ./run.sh
 ```
 
-## Configuration
+### Configuration
 
 You can adjust model parameters in `src/config/settings.py`:
 

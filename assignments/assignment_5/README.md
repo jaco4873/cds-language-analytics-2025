@@ -106,3 +106,29 @@ assignment_5/
 - This project uses the IMDb dataset created by Maas et al. (2011)
 - Transformer models powered by the [HuggingFace Transformers](https://huggingface.co/transformers/) library
 - Dataset handling provided by [HuggingFace Datasets](https://huggingface.co/docs/datasets/)
+
+### Configuration
+
+You can adjust model parameters in `src/settings.py`:
+
+```python
+# Data Settings
+SAMPLE_SIZE: int = 10000  # Number of samples to use from the dataset
+VALIDATION_SPLIT: float = 0.1  # Percentage of data to use for validation
+RANDOM_SEED: int = 42  # Random seed for reproducibility
+
+# Model Configuration
+DEFAULT_MODEL: str = "both"  # Which models to train: "logistic", "transformer", or "both"
+
+# Logistic Regression Settings
+BAYES_SEARCH_ITERATIONS: int = 20  # Number of iterations for Bayesian optimization
+BAYES_CV_FOLDS: int = 3  # Number of cross-validation folds
+
+# Transformer Settings
+TRANSFORMER_MODEL: str = "distilbert-base-uncased"  # Pretrained model to use
+NUM_EPOCHS: int = 3  # Number of training epochs
+BATCH_SIZE: int = 16  # Batch size for training
+LEARNING_RATE: float = 1e-5  # Learning rate for optimization
+```
+
+The settings are centralized in a Pydantic configuration class, providing type validation and sensible defaults. They can be modified as desired.
