@@ -46,9 +46,7 @@ The analysis uses the Fake News dataset, containing 6,335 labeled news articles 
 
 ## Getting Started
 
-### Setup and Run
-
-#### Easiest Method (One Step)
+### Easiest Method (One Step)
 The simplest way to run the analysis:
 
 ```bash
@@ -57,7 +55,7 @@ The simplest way to run the analysis:
 ```
 When prompted for setup, simply press Enter to accept. This will set up the environment and run the analysis in one go.
 
-#### Step-by-Step Alternative
+### Step-by-Step Alternative
 If you prefer to run the process in separate steps:
 
 ```bash
@@ -116,9 +114,15 @@ The classification benchmarks revealed shows performance varies across the three
 Training times differed significantly: Neural Network was the slowest (3.98 seconds), followed by Logistic Regression (0.08 seconds), while Naive Bayes was exceptionally fast (0.006 seconds).
 
 ![Accuracy Comparison](output/figures/accuracy_comparison.png)
+*Figure 1: Accuracy comparison across all three models, showing Neural Network with the highest overall performance.*
 
-The relatively high performance across all models suggests that lexical features captured by TF-IDF vectorization provide strong signals for distinguishing between real and fake news articles. 
+![Precision Recall Comparison](output/figures/precision_recall_comparison.png)
+*Figure 2: Precision and recall metrics for each model and class, illustrating the trade-offs between correctly identifying real vs. fake news.*
 
+![F1 Score Comparison](output/figures/f1_score_comparison.png)
+*Figure 3: F1 scores for each model and class, showing the balance between precision and recall.*
+
+The relatively high performance across all models suggests that lexical features captured by TF-IDF vectorization provide strong signals for distinguishing between real and fake news articles.
 
 ## Requirements
 
