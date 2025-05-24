@@ -11,6 +11,7 @@ Sentiment analysis is a fundamental NLP task with applications across domains fr
 The importance of this question lies in determining the most appropriate approach for different NLP application contexts, balancing accuracy requirements against computational constraints. Recent advances in transformer architectures have shown impressive results across various NLP tasks, but their resource intensity raises questions about their practical applicability in all scenarios.
 
 This study explores how modern transformer architectures compare to classic machine learning techniques by:
+
 1. Using the IMDb movie review dataset with binary sentiment labels (positive/negative)
 2. Implementing a DistilBERT transformer model for sentiment classification
 3. Comparing against a TF-IDF + Logistic Regression baseline

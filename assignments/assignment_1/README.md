@@ -77,10 +77,6 @@ These metrics provide quantitative data that could be used for further comparati
 - pip (for downloading the spaCy model)
 - en_core_web_md model for spaCy
 
-## Author
-
-Jacob Lillelund
-
 ## References
 
 - Uppsala Student English Corpus (USE). Department of English, Uppsala University.

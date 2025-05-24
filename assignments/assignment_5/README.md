@@ -16,6 +16,7 @@ Simply run the provided script to start the analysis:
 ```
 
 This script handles everything automatically:
+
 - Checks if the environment is set up, and prompts to run setup if needed
 - Displays current configuration settings
 - Runs the IMDb sentiment analysis pipeline
@@ -30,6 +31,7 @@ python src/main.py run --sample-size 10000 --model transformer --num-epochs 3
 ```
 
 Available parameters:
+
 - `--sample-size`: Number of samples to use (default: 10000)
 - `--model`: Which model to train - "logistic", "transformer", or "both" (default: "both")
 - `--num-epochs`: Number of epochs for transformer training (default: 3)

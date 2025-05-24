@@ -88,6 +88,7 @@ The analysis workflow consists of:
    - Text Summary: Analysis summary file with basic statistics about topics and documents
 
 The model configuration uses several techniques to improve topic quality:
+
 - Minimum topic size of 25 documents to focus on meaningful topics
 - Stopword removal to eliminate common non-informative words
 - Reduction of frequent words' impact to prevent common domain-specific terms from dominating topics
@@ -121,6 +122,7 @@ The analysis shows clear alignment between discovered topics and predefined cate
 
 #### SPORTS
 Contains distinct subclusters for different sports:
+
 - Football (Topic 2): Super Bowl, touchdowns, NFL figures
 - Basketball (Topic 5): NBA, games, players
 - Olympics (Topic 6): Olympic athletes, medals, events
@@ -129,6 +131,7 @@ Contains distinct subclusters for different sports:
 
 #### FOOD & DRINK
 Dominated by recipes (Topic 1), but includes specialized topics:
+
 - Cocktails/Beer (Topic 18): brewing, mixology, beer types
 - Wine (Topic 30): vineyards, wine varieties, tasting
 - Coffee (Topic 39): Starbucks, caffeine, espresso
@@ -138,6 +141,7 @@ Primarily associated with police/shooting/murder topics (Topic 0), with addition
 
 #### TRAVEL
 Shows diverse travel subcategories:
+
 - General travel (Topic 3): destinations, planning
 - Airlines (Topic 7): flights, airports, travel tips
 - Specific destinations like Paris/Italy (Topic 22)
@@ -146,6 +150,7 @@ Shows diverse travel subcategories:
 
 #### COMEDY
 Organized around specific comedians and shows:
+
 - Colbert (Topic 8)
 - SNL (Topic 17)
 - Trevor Noah (Topic 29)
@@ -154,6 +159,7 @@ Organized around specific comedians and shows:
 
 #### BUSINESS
 Includes various business subtopics:
+
 - Leadership (Topic 10)
 - Marketing/startups (Topic 12)
 - Banking/mortgage (Topic 14)
@@ -161,7 +167,7 @@ Includes various business subtopics:
 - Oil/energy (Topic 36)
 - Tax/IRS (Topic 63)
 
-### Significant Patterns
+### Patterns
 
 1. Hierarchical Content Organization: News content follows a clear structure from broad topics to specialized niches
 2. Category-Specific Language: Each topic uses distinct vocabulary patterns that signal its content domain
