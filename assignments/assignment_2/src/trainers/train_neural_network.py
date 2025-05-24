@@ -7,7 +7,6 @@ This script uses settings from the central configuration.
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from settings import settings
-from utils.logger import logger
 from utils.trainer_utils import train_and_evaluate_model
 
 
@@ -49,7 +48,7 @@ def train_neural_network(
         f"learning_rate_init={nn_config.learning_rate_init}"
     )
     
-    # Define model factory function that uses dict expansion
+    # Define model factory function
     def create_model():
         return MLPClassifier(
             hidden_layer_sizes=hidden_layer_sizes,

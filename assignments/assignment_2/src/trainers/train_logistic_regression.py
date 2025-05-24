@@ -7,7 +7,6 @@ This script uses settings from the central configuration.
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from settings import settings
-from utils.logger import logger
 from utils.trainer_utils import train_and_evaluate_model
 
 
@@ -42,7 +41,7 @@ def train_logistic_regression(
     # Create model info string for logging
     model_info = f"Training Logistic Regression (C={lr_config.c_value}, max_iter={lr_config.max_iter}, solver={lr_config.solver})..."
     
-    # Define model factory function that uses dict expansion
+    # Define model factory function
     def create_model():
         return LogisticRegression(
             random_state=settings.models.random_state,

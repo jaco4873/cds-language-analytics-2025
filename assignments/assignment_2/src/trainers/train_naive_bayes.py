@@ -7,7 +7,6 @@ This script uses settings from the central configuration.
 import numpy as np
 from sklearn.naive_bayes import MultinomialNB
 from settings import settings
-from utils.logger import logger
 from utils.trainer_utils import train_and_evaluate_model
 
 
@@ -42,7 +41,7 @@ def train_naive_bayes(
     # Create model info string for logging
     model_info = f"Training Naive Bayes (alpha={nb_config.alpha}, fit_prior={nb_config.fit_prior})..."
     
-    # Define model factory function that uses dict expansion
+    # Define model factory function
     def create_model():
         return MultinomialNB(
             **nb_config.dict(exclude={"name", "enabled"})

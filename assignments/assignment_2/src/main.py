@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Orchestration script for text classification benchmarks on the Fake News Dataset.
 This script runs the entire pipeline:
@@ -10,7 +9,6 @@ This script runs the entire pipeline:
 """
 
 import pandas as pd
-import seaborn as sns
 
 from trainers.train_logistic_regression import train_logistic_regression
 from trainers.train_neural_network import train_neural_network
@@ -22,11 +20,7 @@ from utils.common import ensure_all_dirs
 from utils.visualization_utils import create_visualizations
 from utils.result_utils import create_comparison_table
 from utils.logger import logger
-
-# Import the vectorization pipeline
 from data_processing.vectorize_data import vectorization_pipeline
-
-# Import settings
 from settings import settings
 
 
