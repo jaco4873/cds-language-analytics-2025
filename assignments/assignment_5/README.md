@@ -1,4 +1,4 @@
-# IMDb Movie Review Sentiment Analysis
+# Assignment 5: IMDb Movie Review Sentiment Analysis
 
 ## Introduction
 This project implements and compares transformer models with traditional machine learning approaches for sentiment analysis on the IMDb movie review dataset.

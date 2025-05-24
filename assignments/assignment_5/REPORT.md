@@ -1,4 +1,4 @@
-# IMDb Sentiment Analysis: Transformer vs. Traditional Methods
+# Assignment 5 Report: IMDb Sentiment Analysis: Transformer vs. Traditional Methods
 
 ## Abstract
 This study compares the performance of a transformer-based approach (DistilBERT) with a traditional machine learning pipeline (TF-IDF + Logistic Regression) for sentiment analysis on IMDb movie reviews. While the transformer model achieved higher accuracy (90.8% vs 88.7%), this improvement came at significantly higher computational cost. Analysis of performance across review lengths revealed that both models perform best on medium-length reviews, with transformers showing advantages primarily for longer documents. These findings suggest that the choice between approaches should consider both performance requirements and computational constraints.
@@ -18,15 +18,17 @@ This study explores how modern transformer architectures compare to classic mach
 
 ## Methods
 ### Data Processing
-We used the IMDb movie reviews dataset with binary sentiment labels (positive/negative) from HuggingFace's datasets library. Our data processing pipeline included:
+We used the IMDb movie reviews dataset with binary sentiment labels (positive/negative) directly loaded from HuggingFace's datasets library. This dataset provides a standard benchmark for sentiment analysis tasks, featuring movie reviews with binary sentiment classifications. Our data processing pipeline included:
 
-1. Loading the dataset directly using the `load_dataset()` function
+1. Loading the dataset directly using the `load_dataset()` function from HuggingFace
 2. Standardizing column names ("text" → "review", "label" → "sentiment")  
 3. Creating a balanced dataset of 10,000 reviews through stratified sampling (5,000 positive, 5,000 negative) to ensure equal representation of sentiment classes
 4. Implementing a 90/10 train/validation split while preserving class balance through proportional stratification
 5. Using a separate test set of 2,000 reviews with equal class distribution for consistent evaluation
 
 This approach ensures consistent handling of both training and test datasets while maintaining the original class distribution when using subsets. The three-way split (train/validation/test) is particularly important for our implementation of early stopping in both models. The validation set allows us to monitor model performance during training and prevent overfitting without contaminating our test results, while the separate test set provides an unbiased evaluation of final model performance.
+
+On first run, the system automatically downloads the IMDb dataset from HuggingFace and caches it locally for future use, streamlining the experimental setup process.
 
 ### Model Implementation
 #### Baseline: TF-IDF + Logistic Regression

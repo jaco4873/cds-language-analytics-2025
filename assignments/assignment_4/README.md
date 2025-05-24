@@ -1,4 +1,4 @@
-# Topic Analysis of News Headlines with BERTopic
+# Assignment 4: Topic Analysis of News Headlines with BERTopic
 
 ## Introduction 
 This project analyzes news headlines using BERTopic to discover underlying topics and how they relate to the predefined news categories. News headlines are concise, information-dense snippets that often contain the core message of a news article. By applying topic modeling to headlines, we can uncover common themes across news stories and identify patterns in how headlines are crafted for different news categories.

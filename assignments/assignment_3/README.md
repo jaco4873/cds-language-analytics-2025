@@ -1,4 +1,4 @@
-# N-gram Language Model
+# Assignment 3: N-gram Language Model
 
 ## Introduction
 This project implements a generative n-gram language model that can be trained on text data and generate new text based on the learned patterns. The model supports various configurations such as n-gram size, smoothing techniques, and different text generation strategies.
