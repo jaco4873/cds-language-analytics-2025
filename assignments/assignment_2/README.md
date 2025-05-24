@@ -142,10 +142,6 @@ The relatively high performance across all models suggests that lexical features
 - Issue: Missing data file
   Solutio: Ensure `fake_or_real_news.csv` is in the `data/` directory
 
-## Author
-
-Jacob Lillelund
-
 ## References
 
 - Fake News Dataset: A collection of real and fake news articles used for text classification tasks.

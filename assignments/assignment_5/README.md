@@ -1,45 +1,21 @@
 # IMDb Movie Review Sentiment Analysis
 
+## Introduction
 This project implements and compares transformer models with traditional machine learning approaches for sentiment analysis on the IMDb movie review dataset.
-
-## Project Overview
 
 This repository contains the code and implementation details for comparing DistilBERT (a transformer model) against TF-IDF + Logistic Regression (a traditional ML approach) for IMDb movie review sentiment classification.
 
 For the full research report, methodology, results, and discussion, please see [REPORT.md](./REPORT.md).
 
-## Project Structure
-
-```
-assignment_5/
-├── output/                    # Output directory
-│   ├── model/                 # Saved model files
-│   └── figures/               # Visualization outputs
-├── src/                       # Source code
-│   ├── main.py                # Main execution script
-│   ├── settings.py            # Centralized configuration
-│   ├── models/                # Model implementations
-│   │   ├── distil_bert.py     # Transformer model
-│   │   └── logistic_regression.py # Baseline model
-│   ├── utils/                 # Utility functions
-│   │   ├── data.py            # Data loading and preprocessing
-│   │   └── visualization.py   # Visualization functions
-├── README.md                  # Project documentation
-├── REPORT.md                  # Academic research report
-├── run.sh                     # Execution script
-└── setup.sh                   # Environment setup script
-```
-
-## Technical Implementation
-
-### Data Processing
-
+## Data
 The project uses the IMDb movie review dataset from HuggingFace and provides:
 
 - Binary sentiment classification (positive/negative reviews)
 - Dataset loaded directly using HuggingFace Datasets library
 - Balanced dataset creation through stratified sampling to maintain equal positive/negative distributions
 - Train/validation/test splitting functionality
+
+## Methods
 
 ### Models
 
@@ -92,6 +68,28 @@ You can continue training from a saved checkpoint:
 
 ```bash
 python src/main.py run --model transformer --resume-from checkpoint-3000
+```
+
+## Project Structure
+
+```
+assignment_5/
+├── output/                    # Output directory
+│   ├── model/                 # Saved model files
+│   └── figures/               # Visualization outputs
+├── src/                       # Source code
+│   ├── main.py                # Main execution script
+│   ├── settings.py            # Centralized configuration
+│   ├── models/                # Model implementations
+│   │   ├── distil_bert.py     # Transformer model
+│   │   └── logistic_regression.py # Baseline model
+│   ├── utils/                 # Utility functions
+│   │   ├── data.py            # Data loading and preprocessing
+│   │   └── visualization.py   # Visualization functions
+├── README.md                  # Project documentation
+├── REPORT.md                  # Academic research report
+├── run.sh                     # Execution script
+└── setup.sh                   # Environment setup script
 ```
 
 ## Technology Stack

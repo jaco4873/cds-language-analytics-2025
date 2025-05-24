@@ -93,7 +93,7 @@ The model configuration uses several techniques to improve topic quality:
 - Stopword removal to eliminate common non-informative words
 - Reduction of frequent words' impact to prevent common domain-specific terms from dominating topics
 
-## Results & Analysis
+## Results
 
 The analysis discovered 65+ distinct topics in the news headlines, with significant findings including:
 
